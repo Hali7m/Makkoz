@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARL Makkoz — Brume Parfumée Corps et Cheveux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;600;700&family=Montserrat:wght@300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   TOKEN SYSTEM — directly from car wrap photos
+   ══════════════════════════════════════════════ */
+:root {
+  /* Wrap-accurate palette */
+  --magenta:    #E8006E;
+  --magenta-dk: #C2005C;
+  --yellow:     #F5C800;
+  --teal:       #00BFAD;
+  --cream:      #F5F0EA;   /* exact car body colour */
+  --cream-lt:   #FAF7F3;
+  --ink:        #1A1612;
+  --mist:       #6B5E4E;
+  --white:      #FFFFFF;
+
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-ui:      'Raleway', sans-serif;
+  --ff-body:    'Montserrat', sans-serif;
+  --ff-arabic:  'Noto Sans Arabic', sans-serif;
+  --ease:       cubic-bezier(.4,0,.2,1);
+}
+
+/* ── RESET & BASE ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+body.lang-ar { font-family: var(--ff-arabic); direction: rtl; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--magenta); }
+::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+
+/* ── LANG BAR ─────────────────────────────────── */
+#lang-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  height: 34px;
+  background: var(--ink);
+  display: flex; justify-content: flex-end; align-items: center;
+  padding: 0 2rem; gap: 0;
+}
+.lang-btn {
+  background: none; border: none;
+  color: rgba(245,200,0,.6);
+  font-family: var(--ff-body); font-size: .65rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: 0 1rem; height: 100%; cursor: pointer;
+  border-right: 1px solid rgba(245,200,0,.12);
+  transition: color .2s, background .2s;
+}
+.lang-btn:first-child { border-left: 1px solid rgba(245,200,0,.12); }
+.lang-btn:hover { color: var(--white); background: rgba(245,200,0,.08); }
+.lang-btn.active { color: var(--yellow); }
+
+/* Wrap palette bar (fixed under lang-bar) */
+.color-bar {
+  position: fixed; top: 34px; left: 0; right: 0; z-index: 299;
+  height: 5px; display: flex;
+}
+.cb-m { flex: 5; background: var(--magenta); }
+.cb-y { flex: 2; background: var(--yellow); }
+.cb-t { flex: 1; background: var(--teal); }
+
+/* ── NAV ──────────────────────────────────────── */
+nav {
+  position: fixed; top: 39px; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 68px;
+  background: rgba(245,240,234,.95);
+  backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid var(--magenta);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: .7rem;
+  text-decoration: none;
+}
+.nav-logo-name {
+  font-family: var(--ff-ui); font-weight: 700;
+  font-size: 1.1rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--ink);
+  line-height: 1.1;
+}
+.nav-logo-name small {
+  display: block; font-size: .55rem; letter-spacing: .18em;
+  color: var(--mist); font-weight: 300; margin-top: 2px;
+}
+.nav-links { display: flex; gap: 2.4rem; list-style: none; }
+.nav-links a {
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--mist); text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links a:hover { color: var(--magenta); border-bottom-color: var(--magenta); }
+.nav-cta-btn {
+  background: var(--magenta); color: var(--white) !important;
+  border-bottom: none !important;
+  padding: 8px 20px !important;
+  transition: background .2s !important;
+}
+.nav-cta-btn:hover { background: var(--magenta-dk) !important; color: var(--white) !important; }
+body.lang-ar nav { flex-direction: row-reverse; }
+
+/* ── HERO ─────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  padding-top: 107px;  /* lang(34) + colorbar(5) + nav(68) */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 5rem 4rem 5rem 7rem;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-size: .66rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1.6rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.hero-eyebrow::before { content:''; width:22px; height:2px; background:var(--magenta); display:block; }
+body.lang-ar .hero-eyebrow::before { display: none; }
+body.lang-ar .hero-eyebrow::after { content:''; width:22px; height:2px; background:var(--magenta); display:block; }
+
+.hero-title {
+  font-family: var(--ff-display);
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  font-weight: 200; line-height: 1.0;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: .6rem;
+}
+.hero-title em { font-style: italic; color: var(--magenta); font-weight: 300; }
+.hero-subtitle {
+  font-family: var(--ff-ui); font-size: .85rem; font-weight: 300;
+  letter-spacing: .35em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 2rem;
+}
+.hero-desc {
+  font-size: .9rem; color: var(--mist);
+  max-width: 400px; line-height: 1.9; margin-bottom: 2.6rem;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--magenta); color: var(--white);
+  padding: .88rem 2rem; font-size: .75rem; letter-spacing: .14em;
+  text-transform: uppercase; font-family: var(--ff-body); font-weight: 500;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .22s, gap .22s;
+}
+.btn-primary:hover { background: var(--magenta-dk); gap: 1rem; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: .6rem;
+  border: 1.5px solid var(--teal); color: var(--teal);
+  padding: .85rem 1.8rem; font-size: .75rem; letter-spacing: .14em;
+  text-transform: uppercase; font-family: var(--ff-body); font-weight: 400;
+  text-decoration: none; transition: background .22s, color .22s;
+}
+.btn-secondary:hover { background: var(--teal); color: var(--white); }
+
+/* Hero right panel */
+.hero-right {
+  position: relative; overflow: hidden;
+  background: var(--ink);
+}
+.hero-right-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(145deg, rgba(26,22,18,.25) 0%, rgba(26,22,18,.75) 100%);
+}
+.hero-product-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: .5; mix-blend-mode: luminosity;
+}
+.hero-right-content {
+  position: relative; z-index: 2; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 5rem 3rem; text-align: center;
+}
+.hero-pill {
+  border: 1px solid rgba(245,200,0,.4);
+  color: var(--yellow); font-size: .62rem; letter-spacing: .22em;
+  text-transform: uppercase; padding: .5rem 1.3rem;
+  margin-bottom: 1.8rem; display: inline-block;
+}
+.hero-right-title {
+  font-family: var(--ff-display); font-size: 2.6rem; font-weight: 200;
+  color: var(--white); letter-spacing: .15em; text-transform: uppercase;
+  line-height: 1.1; margin-bottom: .5rem;
+}
+.hero-right-title em { font-style: italic; color: var(--magenta); font-weight: 300; }
+.hero-right-sub {
+  font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 3rem;
+}
+
+/* Animated floating bottles in hero-right */
+.hero-bottles {
+  display: flex; gap: 20px; align-items: flex-end;
+  margin-top: 1rem;
+}
+.hb { position: relative; cursor: pointer; }
+.hb:hover .hb-body { transform: translateY(-8px); }
+.hb-body {
+  border-radius: 10px 10px 7px 7px;
+  box-shadow: 0 16px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.04);
+  overflow: hidden; transition: transform .35s var(--ease);
+}
+.hb-neck { border-radius: 4px 4px 0 0; margin: 0 auto -1px; }
+.hb-cap  { border-radius: 3px 3px 0 0; margin: 0 auto -1px; background: #111; }
+.hb-label {
+  position: absolute; inset: 18px 8px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 4px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px; padding: 8px;
+}
+.hb-label h4 {
+  font-family: var(--ff-display); font-size: 10px; font-weight: 400;
+  color: #fff; letter-spacing: 1px; text-align: center; line-height: 1.3;
+}
+.hb-label span { font-size: 6px; letter-spacing: 2px; color:rgba(255,255,255,.5); text-transform:uppercase; text-align:center; }
+.hb-label hr { width: 22px; border: none; border-top: 1px solid var(--yellow); }
+
+/* Bottle 1 – green */
+.hb1 { animation: hfloat1 4.2s ease-in-out infinite; }
+.hb1 .hb-cap  { width: 38px; height: 13px; }
+.hb1 .hb-neck { width: 48px; height: 18px; background: #2D5016; }
+.hb1 .hb-body { width: 78px; height: 200px; background: linear-gradient(165deg,#3A6B1E,#2D5016,#1A3009); }
+.hb1 .hb-label { background: rgba(255,255,255,.06); }
+
+/* Bottle 2 – black (tallest) */
+.hb2 { animation: hfloat2 5s ease-in-out infinite; }
+.hb2 .hb-cap  { width: 50px; height: 16px; }
+.hb2 .hb-neck { width: 62px; height: 22px; background: #1A1A1A; }
+.hb2 .hb-body { width: 96px; height: 250px; background: linear-gradient(165deg,#2E2E2E,#1A1A1A,#0D0D0D); }
+.hb2 .hb-label { background: rgba(232,0,110,.12); border-color: rgba(232,0,110,.35); }
+.hb2 .hb-label hr { border-top-color: var(--magenta); }
+
+/* Bottle 3 – red */
+.hb3 { animation: hfloat3 3.8s ease-in-out infinite; }
+.hb3 .hb-cap  { width: 38px; height: 13px; }
+.hb3 .hb-neck { width: 48px; height: 18px; background: #8B1A1A; }
+.hb3 .hb-body { width: 78px; height: 185px; background: linear-gradient(165deg,#C0392B,#8B1A1A,#5C0D0D); }
+.hb3 .hb-label { background: rgba(255,255,255,.05); }
+
+@keyframes hfloat1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes hfloat2 { 0%,100%{transform:translateY(-5px)} 50%{transform:translateY(7px)} }
+@keyframes hfloat3 { 0%,100%{transform:translateY(-3px)} 50%{transform:translateY(-14px)} }
+
+/* Wrap stripe at bottom of hero-right */
+.wrap-stripe {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 26px; display: flex;
+}
+.ws-m { flex: 5; background: var(--magenta); }
+.ws-y { flex: 2; background: var(--yellow); }
+.ws-t { flex: 1; background: var(--teal); }
+
+/* MAKKOZ ghost text */
+.hero-brand-ghost {
+  position: absolute; bottom: 3.5rem; left: 2rem; right: 2rem;
+  font-family: var(--ff-display); font-size: clamp(3rem,6vw,5rem);
+  font-weight: 300; letter-spacing: .1em;
+  color: rgba(245,200,0,.06);
+  text-align: center; line-height: 1; pointer-events: none;
+  text-transform: uppercase;
+}
+
+/* ── MARQUEE ──────────────────────────────────── */
+.marquee-strip {
+  background: var(--ink);
+  padding: 13px 0; overflow: hidden;
+  border-top: 2px solid var(--magenta);
+  border-bottom: 2px solid var(--yellow);
+}
+.marquee-inner {
+  display: flex; white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+.marquee-item {
+  font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(250,247,243,.55); padding: 0 2.5rem; flex-shrink: 0;
+}
+.marquee-dot { color: var(--magenta); margin: 0 .5rem; }
+.marquee-teal { color: var(--teal); }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── SHARED SECTION ───────────────────────────── */
+section { padding: 6.5rem 7rem; }
+.section-eyebrow {
+  font-size: .66rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-eyebrow::after { content:''; width:36px; height:1.5px; background:var(--magenta); display:block; }
+.section-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 200; line-height: 1.1;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: 1rem;
+}
+.section-title em { font-style: italic; color: var(--magenta); font-weight: 300; }
+.divider {
+  width: 52px; height: 3px;
+  background: linear-gradient(90deg, var(--magenta), var(--yellow), var(--teal));
+  margin: 1.8rem 0;
+}
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── ABOUT ────────────────────────────────────── */
+#about {
+  background: var(--white);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: center;
+}
+.about-visual {
+  position: relative; overflow: hidden;
+  aspect-ratio: 3/4;
+  background: var(--ink);
+}
+.about-visual img { width:100%;height:100%;object-fit:cover;opacity:.6; }
+.av-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,22,18,.9) 25%, transparent 70%);
+}
+.av-text { position: absolute; bottom: 2.5rem; left: 2rem; right: 2rem; }
+.av-brand {
+  font-family: var(--ff-display); font-size: 2rem; font-weight: 300;
+  color: var(--yellow); letter-spacing: .22em; text-transform: uppercase;
+}
+.av-sub { font-size: .6rem; letter-spacing: .25em; color: var(--teal); margin-top: .4rem; text-transform:uppercase; }
+.av-stripe { position:absolute; bottom:0; left:0; right:0; height:6px; display:flex; }
+.av-stripe div:nth-child(1){flex:5;background:var(--magenta);}
+.av-stripe div:nth-child(2){flex:2;background:var(--yellow);}
+.av-stripe div:nth-child(3){flex:1;background:var(--teal);}
+
+.about-text p { font-size: .9rem; color: var(--mist); line-height: 1.95; margin-bottom: 1.1rem; }
+.about-text p strong { color: var(--ink); font-weight: 600; }
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem;
+}
+.stat-box { padding: 1.5rem; border-bottom: 2px solid var(--yellow); background: var(--cream); }
+.stat-num {
+  font-family: var(--ff-display); font-size: 2.6rem; font-weight: 300;
+  color: var(--magenta); line-height: 1; display: block; letter-spacing: .04em;
+}
+.stat-label { font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mist); margin-top: .35rem; display:block; }
+
+/* ── PRODUCTS ─────────────────────────────────── */
+#products { background: var(--cream); }
+.products-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1.5rem;
+}
+.filter-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.filter-btn {
+  padding: .5rem 1.1rem; font-size: .62rem; letter-spacing: .14em;
+  text-transform: uppercase; font-family: var(--ff-body); font-weight: 400;
+  border: 1.5px solid var(--ink); background: transparent;
+  color: var(--ink); cursor: pointer; transition: all .2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--magenta); border-color: var(--magenta); color: var(--white);
+}
+.products-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+}
+.product-card {
+  background: var(--white); position: relative; overflow: hidden;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 24px 72px rgba(26,22,18,.1); }
+.product-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--magenta), var(--yellow));
+  transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
+}
+.product-card:hover::after { transform: scaleX(1); }
+
+.product-img {
+  height: 280px; display: flex; align-items: flex-end; justify-content: center;
+  padding: 2rem; position: relative; overflow: hidden;
+}
+.product-badge {
+  position: absolute; top: 1rem; left: 1rem;
+  background: var(--magenta); color: var(--white);
+  font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: .3rem .7rem; z-index: 2;
+}
+.badge-new { background: var(--yellow); color: var(--ink); }
+.badge-limited { background: var(--teal); color: var(--white); }
+
+/* Styled bottle in product card */
+.pc-bottle { position: relative; transition: transform .35s var(--ease); }
+.product-card:hover .pc-bottle { transform: scale(1.05) translateY(-6px); }
+.pc-body {
+  border-radius: 10px 10px 7px 7px;
+  box-shadow: 0 12px 48px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.1);
+  overflow: hidden; position: relative;
+}
+.pc-neck { border-radius: 4px 4px 0 0; margin: 0 auto -1px; }
+.pc-cap  { border-radius: 3px 3px 0 0; margin: 0 auto -1px; background: #222; }
+.pc-lbl  {
+  position: absolute; inset: 14px 7px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 3px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px; padding: 6px;
+  background: rgba(255,255,255,.06);
+}
+.pc-lbl span { font-family: var(--ff-display); font-size: 7px; color:#fff; text-align:center; line-height:1.4; letter-spacing:.5px; }
+
+.product-info { padding: 1.6rem 2rem 2rem; border-top: 1px solid var(--cream); }
+.product-name {
+  font-family: var(--ff-display); font-size: 1.2rem; font-weight: 400;
+  color: var(--ink); letter-spacing: .06em; text-transform: uppercase;
+  line-height: 1.2; margin-bottom: .3rem;
+}
+.product-sub { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+.product-desc { font-size: .82rem; color: var(--mist); line-height: 1.8; margin-bottom: 1.2rem; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-family: var(--ff-display); font-size: 1.6rem; font-weight: 300; color: var(--ink); }
+.product-price small { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .1em; color: var(--mist); }
+.add-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--magenta); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+}
+.add-btn:hover { background: var(--magenta-dk); transform: scale(1.1); }
+.add-btn svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
+/* BG tones for product cards */
+.bg-midnight { background: linear-gradient(135deg,#D8D4CE,#B8B0A8); }
+.bg-forest   { background: linear-gradient(135deg,#D4E6C0,#B0D090); }
+.bg-ruby     { background: linear-gradient(135deg,#F0D0D8,#E0A8B8); }
+.bg-violet   { background: linear-gradient(135deg,#DDD0F0,#BBA8E0); }
+.bg-amber    { background: linear-gradient(135deg,#F0E8C0,#E0D090); }
+.bg-azure    { background: linear-gradient(135deg,#C8E0F0,#A8C8E8); }
+
+/* ── FEATURE (Brume spotlight) ────────────────── */
+#feature {
+  background: var(--ink);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: center;
+  position: relative; overflow: hidden;
+}
+#feature::before {
+  content: 'BRUME';
+  position: absolute; right: -40px; top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--ff-display); font-size: 10rem; font-weight: 300;
+  color: rgba(255,255,255,.025); pointer-events: none;
+  letter-spacing: .05em; line-height: 1;
+}
+.feature-content .section-eyebrow { color: var(--yellow); }
+.feature-content .section-eyebrow::after { background: var(--yellow); }
+.feature-content .section-title { color: var(--white); }
+.feature-content .section-title em { color: var(--magenta); }
+.feature-desc { font-size: .9rem; color: rgba(250,247,243,.5); max-width: 440px; line-height: 1.9; margin-bottom: 2rem; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+.feature-list li {
+  display: flex; align-items: flex-start; gap: 1rem;
+  font-size: .85rem; color: rgba(250,247,243,.65); line-height: 1.7;
+}
+.feature-list li::before {
+  content:''; flex-shrink:0; width:6px; height:6px; border-radius:50%;
+  background: var(--magenta); margin-top: .5rem;
+}
+
+/* Feature bottle trio */
+.feature-bottles {
+  display: flex; gap: 18px; align-items: flex-end;
+  justify-content: center; padding: 2rem 0;
+}
+.fb { position: relative; transition: transform .35s var(--ease); cursor:pointer; }
+.fb:hover { transform: translateY(-10px); }
+.fb-body {
+  border-radius: 14px 14px 10px 10px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+  overflow: hidden; position: relative;
+}
+.fb-neck { border-radius: 4px 4px 0 0; margin: 0 auto -1px; }
+.fb-cap  { border-radius: 3px 3px 0 0; margin: 0 auto -1px; background: #0D0D0D; }
+.fb-lbl  {
+  position: absolute; inset: 26px 12px;
+  border-radius: 6px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px; padding: 10px;
+}
+.fb-lbl h4 { font-family: var(--ff-display); font-size: 11px; font-weight: 400; color:#fff; letter-spacing:1.5px; text-align:center; line-height:1.3; }
+.fb-lbl p  { font-size: 6.5px; letter-spacing: 2px; color:rgba(255,255,255,.5); text-transform:uppercase; text-align:center; }
+.fb-lbl hr { width: 28px; border: none; border-top: 1px solid; }
+
+/* Wrap-stripe on feature section bottom */
+.feature-wrap-stripe { display: flex; height: 5px; margin-top: 4rem; }
+.feature-wrap-stripe div:nth-child(1){flex:5;background:var(--magenta);}
+.feature-wrap-stripe div:nth-child(2){flex:2;background:var(--yellow);}
+.feature-wrap-stripe div:nth-child(3){flex:1;background:var(--teal);}
+
+/* ── BRANDS ───────────────────────────────────── */
+#brands { background: var(--cream); }
+.brands-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; margin-top: 3rem; }
+.brand-card {
+  background: var(--white); padding: 3.5rem 3rem;
+  border: 2px solid transparent; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: border-color .25s, transform .25s var(--ease);
+}
+.brand-card:hover { border-color: var(--magenta); transform: translateY(-4px); }
+.brand-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.bc1 .brand-accent { background: linear-gradient(90deg, var(--magenta), var(--yellow)); }
+.bc2 .brand-accent { background: linear-gradient(90deg, var(--teal), var(--magenta)); }
+.brand-handle { font-family: var(--ff-display); font-size: 2rem; font-weight: 300; color: var(--ink); letter-spacing: .04em; }
+.brand-handle span { color: var(--magenta); }
+.brand-desc { font-size: .85rem; color: var(--mist); line-height: 1.85; }
+.brand-ig-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: var(--magenta); font-size: .72rem; letter-spacing: .12em;
+  text-transform: uppercase; text-decoration: none;
+  border-bottom: 1px solid var(--magenta); padding-bottom: 2px;
+  transition: color .2s;
+  width: fit-content;
+}
+.brand-ig-btn:hover { color: var(--magenta-dk); }
+
+/* ── CONTACT ──────────────────────────────────── */
+#contact {
+  background: var(--white);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: start;
+}
+.contact-item {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.3rem 0; border-bottom: 1px solid var(--cream);
+}
+.contact-item:first-of-type { border-top: 1px solid var(--cream); }
+.contact-icon-wrap {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--cream); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; margin-top: 2px;
+}
+.contact-label { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mist); display:block; margin-bottom:4px; }
+.contact-value { font-size: .9rem; color: var(--ink); font-weight: 400; line-height:1.6; }
+.contact-value a { color: var(--magenta); text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+
+.contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+.form-group { display: flex; flex-direction: column; gap: .45rem; }
+.form-group label { font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mist); }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%; background: var(--cream);
+  border: 1.5px solid transparent; border-bottom: 1.5px solid rgba(0,0,0,.12);
+  padding: .8rem 1rem; font-family: var(--ff-body); font-size: .9rem;
+  color: var(--ink); outline: none; transition: border-color .2s; resize: none;
+  appearance: none;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--magenta); }
+.form-group textarea { min-height: 110px; resize: vertical; }
+.form-submit {
+  background: var(--magenta); color: var(--white); border: none;
+  padding: .9rem 2rem; font-family: var(--ff-body); font-size: .75rem;
+  letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+  transition: background .2s; width: 100%;
+}
+.form-submit:hover { background: var(--magenta-dk); }
+
+/* ── FOOTER ───────────────────────────────────── */
+footer {
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+
+/* The signature element: yellow + magenta + teal wave
+   directly inspired by rear bumper color block */
+.footer-wave {
+  position: relative; height: 80px; overflow: hidden;
+}
+.footer-wave svg {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+}
+
+.footer-body { padding: 4rem 7rem 2.5rem; }
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 4rem; margin-bottom: 4rem;
+}
+
+.footer-brand-col .footer-logo {
+  display: flex; align-items: center; gap: .65rem; margin-bottom: 1.2rem;
+}
+.footer-logo-name {
+  font-family: var(--ff-ui); font-weight: 700; font-size: 1rem;
+  letter-spacing: .22em; color: var(--yellow); text-transform: uppercase;
+  line-height: 1.1;
+}
+.footer-logo-name small { display: block; font-size: .5rem; letter-spacing: .2em; color: var(--teal); font-weight: 300; }
+.footer-brand-col p { font-size: .8rem; color: rgba(250,247,243,.4); line-height: 1.85; max-width: 260px; }
+
+.footer-social { display: flex; gap: .7rem; margin-top: 1.5rem; }
+.social-btn {
+  width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color .2s, background .2s; text-decoration:none;
+}
+.social-btn:hover { border-color: var(--magenta); background: var(--magenta); }
+.social-btn svg { width: 14px; height: 14px; stroke: rgba(255,255,255,.55); fill: none; stroke-width: 1.5; transition: stroke .2s; }
+.social-btn:hover svg { stroke: #fff; }
+
+.footer-col h5 { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(250,247,243,.3); margin-bottom: 1.3rem; font-weight: 400; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+.footer-col ul li a { font-size: .82rem; color: rgba(250,247,243,.5); text-decoration: none; transition: color .2s; }
+.footer-col ul li a:hover { color: var(--magenta); }
+
+.footer-bottom {
+  padding: 1.5rem 7rem 2rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: .75rem;
+}
+.footer-bottom p { font-size: .7rem; color: rgba(250,247,243,.25); letter-spacing: .08em; }
+
+/* ── WHATSAPP BUTTON ──────────────────────────── */
+.wa-btn {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,.45);
+  transition: transform .2s, box-shadow .2s;
+}
+.wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.65); }
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media (max-width: 1024px) {
+  .products-grid { grid-template-columns: repeat(2,1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+@media (max-width: 900px) {
+  section, #about, #contact { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 4rem; padding-bottom: 4rem; }
+  #hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 5rem 1.5rem 3rem; }
+  #about, #contact, #feature { grid-template-columns: 1fr; gap: 3rem; }
+  .about-visual { display: none; }
+  .products-grid { grid-template-columns: 1fr; }
+  .brands-grid { grid-template-columns: 1fr; }
+  .footer-body, .footer-bottom { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .nav-links { display: none; }
+  .feature-bottles { flex-wrap: wrap; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hb1, .hb2, .hb3 { animation: none; }
+  .marquee-inner { animation-play-state: paused; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div id="lang-bar">
+  <button class="lang-btn active" onclick="setLang('fr')">Français</button>
+  <button class="lang-btn" onclick="setLang('ar')">العربية</button>
+  <button class="lang-btn" onclick="setLang('en')">English</button>
+</div>
+
+<!-- WRAP PALETTE BAR -->
+<div class="color-bar"><div class="cb-m"></div><div class="cb-y"></div><div class="cb-t"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <svg width="38" height="38" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+      <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#1A1612" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+      <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+      <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+      <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+      <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+      <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+    </svg>
+    <div class="nav-logo-name">
+      MAKKOZ
+      <small data-fr="SARL — Cosmétiques" data-ar="SARL — مستحضرات التجميل" data-en="SARL — Cosmetics">SARL — Cosmétiques</small>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about" data-fr="À Propos" data-ar="من نحن" data-en="About">À Propos</a></li>
+    <li><a href="#products" data-fr="Produits" data-ar="المنتجات" data-en="Products">Produits</a></li>
+    <li><a href="#feature" data-fr="Brume" data-ar="ضباب" data-en="Mist">Brume</a></li>
+    <li><a href="#brands" data-fr="Marques" data-ar="العلامات" data-en="Brands">Marques</a></li>
+    <li><a href="#contact" class="nav-cta-btn" data-fr="Contact" data-ar="اتصل" data-en="Contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow reveal" data-fr="SARL MAKKOZ — Importateur Algérien" data-ar="SARL MAKKOZ — مستورد جزائري" data-en="SARL MAKKOZ — Algerian Importer">SARL MAKKOZ — Importateur Algérien</p>
+    <h1 class="hero-title reveal">
+      <em data-fr="Brume" data-ar="ضباب" data-en="Mist">Brume</em><br>
+      <span data-fr="Parfumée" data-ar="معطر" data-en="Perfumed">Parfumée</span>
+    </h1>
+    <p class="hero-subtitle reveal" data-fr="Corps &amp; Cheveux" data-ar="للجسم والشعر" data-en="Body &amp; Hair">Corps &amp; Cheveux</p>
+    <p class="hero-desc reveal" data-fr="Importateur et distributeur algérien de cosmétiques, beauté et hygiène. De Alger à toutes les wilayas — la qualité premium, accessible à tous." data-ar="مستورد وموزع جزائري لمنتجات التجميل والجمال والنظافة. من الجزائر إلى كل الولايات — الجودة في متناول الجميع." data-en="Algerian importer and distributor of cosmetics, beauty and hygiene products. From Algiers to every wilaya — premium quality for everyone.">Importateur et distributeur algérien de cosmétiques, beauté et hygiène. De Alger à toutes les wilayas — la qualité premium, accessible à tous.</p>
+    <div class="hero-ctas reveal">
+      <a href="#products" class="btn-primary">
+        <span data-fr="Voir les produits" data-ar="عرض المنتجات" data-en="View products">Voir les produits</span> →
+      </a>
+      <a href="#contact" class="btn-secondary">
+        <span data-fr="Nous contacter" data-ar="اتصل بنا" data-en="Contact us">Nous contacter</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img class="hero-product-img"
+      src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=900&q=80"
+      alt="Cosmétiques Makkoz"
+      onerror="this.style.display='none'">
+    <div class="hero-right-overlay"></div>
+    <div class="hero-right-content">
+      <div class="hero-pill" data-fr="Beauté · Hygiène · Import" data-ar="الجمال · النظافة · الاستيراد" data-en="Beauty · Hygiene · Import">Beauté · Hygiène · Import</div>
+      <div class="hero-right-title"><em>Brume</em><br>Parfumée</div>
+      <div class="hero-right-sub">Corps &amp; Cheveux</div>
+
+      <!-- Three styled bottles -->
+      <div class="hero-bottles">
+        <!-- Green -->
+        <div class="hb hb1">
+          <div class="hb-cap" style="width:36px;height:12px;"></div>
+          <div class="hb-neck" style="width:46px;height:18px;background:#2D5016;"></div>
+          <div class="hb-body" style="width:78px;height:200px;background:linear-gradient(165deg,#3A6B1E,#2D5016,#1A3009);">
+            <div class="hb-label" style="background:rgba(255,255,255,.06);">
+              <h4>Corps<br>Fraîche</h4>
+              <hr style="border-top-color:var(--yellow);">
+              <span>Makkoz</span>
+            </div>
+          </div>
+        </div>
+        <!-- Black (tallest) -->
+        <div class="hb hb2">
+          <div class="hb-cap" style="width:48px;height:15px;"></div>
+          <div class="hb-neck" style="width:60px;height:22px;background:#1A1A1A;"></div>
+          <div class="hb-body" style="width:96px;height:250px;background:linear-gradient(165deg,#2E2E2E,#1A1A1A,#0D0D0D);">
+            <div class="hb-label" style="background:rgba(232,0,110,.12);border-color:rgba(232,0,110,.35);inset:20px 10px;">
+              <h4>Brume<br>Parfumée<br>Signature</h4>
+              <hr style="border-top-color:var(--magenta);">
+              <span>Corps &amp; Cheveux</span>
+            </div>
+          </div>
+        </div>
+        <!-- Red -->
+        <div class="hb hb3">
+          <div class="hb-cap" style="width:36px;height:12px;"></div>
+          <div class="hb-neck" style="width:46px;height:18px;background:#8B1A1A;"></div>
+          <div class="hb-body" style="width:78px;height:185px;background:linear-gradient(165deg,#C0392B,#8B1A1A,#5C0D0D);">
+            <div class="hb-label" style="background:rgba(255,255,255,.05);">
+              <h4>Cheveux<br>Orientale</h4>
+              <hr style="border-top-color:var(--yellow);">
+              <span>Makkoz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-brand-ghost">MAKKOZ</div>
+    <div class="wrap-stripe"><div class="ws-m"></div><div class="ws-y"></div><div class="ws-t"></div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Brume Parfumée Corps &amp; Cheveux <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">0541 887 610 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SARL Makkoz — Alger, Algérie <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">@notecosmetics_algeria <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Importateur &amp; Distributeur <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">makkoz.contact@gmail.com <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Collection 2025 <span class="marquee-dot">◆</span></span>
+    <!-- duplicate -->
+    <span class="marquee-item">Brume Parfumée Corps &amp; Cheveux <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">0541 887 610 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SARL Makkoz — Alger, Algérie <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">@notecosmetics_algeria <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Importateur &amp; Distributeur <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item marquee-teal">makkoz.contact@gmail.com <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Collection 2025 <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══════════════════════════════════════ -->
+<section id="about">
+  <div class="about-visual reveal">
+    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=700&q=80" alt="Cosmétiques Makkoz" onerror="this.style.opacity='0'">
+    <div class="av-overlay"></div>
+    <div class="av-text">
+      <div class="av-brand">MAKKOZ</div>
+      <div class="av-sub">Brume Parfumée — Algérie</div>
+    </div>
+    <div class="av-stripe"><div></div><div></div><div></div></div>
+  </div>
+
+  <div class="about-text">
+    <p class="section-eyebrow reveal" data-fr="QUI SOMMES-NOUS" data-ar="من نحن" data-en="WHO WE ARE">QUI SOMMES-NOUS</p>
+    <h2 class="section-title reveal" data-fr="Une marque née <em>d'ici</em>" data-ar="علامة تجارية <em>جزائرية</em>" data-en="A brand born <em>here</em>">Une marque née <em>d'ici</em></h2>
+    <div class="divider reveal"></div>
+    <div class="about-text reveal">
+      <p data-fr="SARL Makkoz est un importateur et distributeur algérien de produits cosmétiques, beauté et hygiène. Basés à Aïn Naâdja, Alger, nous livrons sur toute l'Algérie." data-ar="SARL Makkoz هي مستورد وموزع جزائري لمنتجات التجميل والجمال والنظافة. مقرنا في عين النعجة، الجزائر العاصمة." data-en="SARL Makkoz is an Algerian importer and distributor of cosmetics, beauty and hygiene products. Based in Aïn Naâdja, Algiers, we deliver across all of Algeria.">SARL Makkoz est un importateur et distributeur algérien de produits cosmétiques, beauté et hygiène. Basés à Aïn Naâdja, Alger, nous livrons sur toute l'Algérie.</p>
+      <p data-fr="Notre gamme phare, <strong>Brume Parfumée Corps et Cheveux</strong>, réunit hydratation légère et sillage envoûtant — pensée pour la femme algérienne moderne." data-ar="مجموعتنا الرائدة، <strong>ضباب معطر للجسم والشعر</strong>، تجمع بين الترطيب الخفيف والعطر الساحر." data-en="Our flagship range, <strong>Brume Parfumée Corps et Cheveux</strong>, combines light hydration with an enchanting scent trail — designed for the modern Algerian woman.">Notre gamme phare, <strong>Brume Parfumée Corps et Cheveux</strong>, réunit hydratation légère et sillage envoûtant — pensée pour la femme algérienne moderne.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <span class="stat-num">12+</span>
+        <span class="stat-label" data-fr="Références produits" data-ar="مرجع منتج" data-en="Product references">Références produits</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">48</span>
+        <span class="stat-label" data-fr="Wilayas livrées" data-ar="ولاية يتم التوصيل إليها" data-en="Wilayas served">Wilayas livrées</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">2</span>
+        <span class="stat-label" data-fr="Marques Instagram" data-ar="علامة انستغرام" data-en="Instagram brands">Marques Instagram</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">DZ</span>
+        <span class="stat-label" data-fr="100% Algérien" data-ar="100٪ جزائري" data-en="100% Algerian">100% Algérien</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTS ═══════════════════════════════════ -->
+<section id="products">
+  <div class="products-header">
+    <div>
+      <p class="section-eyebrow reveal" data-fr="CATALOGUE" data-ar="الكتالوج" data-en="CATALOGUE">CATALOGUE</p>
+      <h2 class="section-title reveal" data-fr="Nos <em>produits</em>" data-ar="<em>منتجاتنا</em>" data-en="Our <em>products</em>">Nos <em>produits</em></h2>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-fr="Tous" data-ar="الكل" data-en="All">Tous</button>
+      <button class="filter-btn" data-fr="Brumes" data-ar="ضباب" data-en="Mists">Brumes</button>
+      <button class="filter-btn" data-fr="Corps" data-ar="جسم" data-en="Body">Corps</button>
+      <button class="filter-btn" data-fr="Cheveux" data-ar="شعر" data-en="Hair">Cheveux</button>
+    </div>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- 1 Black -->
+    <div class="product-card reveal">
+      <div class="product-img bg-midnight">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:44px;height:14px;"></div>
+          <div class="pc-neck" style="width:56px;height:20px;background:#1A1A1A;"></div>
+          <div class="pc-body" style="width:86px;height:210px;background:linear-gradient(165deg,#2E2E2E,#1A1A1A,#0D0D0D);">
+            <div class="pc-lbl" style="background:rgba(232,0,110,.12);border-color:rgba(232,0,110,.35);">
+              <span>Brume Parfumée<br>Nuit Mystère</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-badge" data-fr="Best-seller" data-en="Best-seller" data-ar="الأكثر مبيعاً">Best-seller</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Nuit Mystère" data-ar="ضباب ليل الغموض" data-en="Brume Nuit Mystère">Brume Nuit Mystère</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Notes orientales profondes. Sillage intense, tenue remarquable." data-ar="نوتات شرقية عميقة. عطر مكثف ومقاوم." data-en="Deep oriental notes. Intense sillage, remarkable hold.">Notes orientales profondes. Sillage intense, tenue remarquable.</p>
+        <div class="product-footer">
+          <div class="product-price">1 850 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Green -->
+    <div class="product-card reveal">
+      <div class="product-img bg-forest">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:40px;height:13px;"></div>
+          <div class="pc-neck" style="width:50px;height:18px;background:#2D5016;"></div>
+          <div class="pc-body" style="width:80px;height:190px;background:linear-gradient(165deg,#3A6B1E,#2D5016,#1A3009);">
+            <div class="pc-lbl"><span>Brume Forêt<br>Fraîche</span></div>
+          </div>
+        </div>
+        <div class="product-badge badge-new" data-fr="Nouveau" data-ar="جديد" data-en="New">Nouveau</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Forêt Fraîche" data-ar="ضباب الغابة المنعشة" data-en="Brume Forêt Fraîche">Brume Forêt Fraîche</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Fraîcheur végétale. Parfaite après la douche ou pour un boost en journée." data-ar="انتعاش نباتي. مثالية بعد الاستحمام أو للتنشيط خلال النهار." data-en="Vegetal freshness. Perfect after the shower or for a midday boost.">Fraîcheur végétale. Parfaite après la douche ou pour un boost en journée.</p>
+        <div class="product-footer">
+          <div class="product-price">1 650 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Red -->
+    <div class="product-card reveal">
+      <div class="product-img bg-ruby">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:40px;height:13px;"></div>
+          <div class="pc-neck" style="width:50px;height:18px;background:#8B1A1A;"></div>
+          <div class="pc-body" style="width:80px;height:175px;background:linear-gradient(165deg,#C0392B,#8B1A1A,#5C0D0D);">
+            <div class="pc-lbl"><span>Brume Rose<br>Intense</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Rose Intense" data-ar="ضباب الوردة الكثيف" data-en="Brume Rose Intense">Brume Rose Intense</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Rose de Damas et muscs blancs. Féminité absolue." data-ar="وردة دمشق ومسك أبيض. أنوثة مطلقة." data-en="Damask rose and white musks. Absolute femininity.">Rose de Damas et muscs blancs. Féminité absolue.</p>
+        <div class="product-footer">
+          <div class="product-price">1 750 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Violet -->
+    <div class="product-card reveal">
+      <div class="product-img bg-violet">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:44px;height:14px;"></div>
+          <div class="pc-neck" style="width:56px;height:20px;background:#4A2E80;"></div>
+          <div class="pc-body" style="width:86px;height:210px;background:linear-gradient(165deg,#6B3FA0,#4A2E80,#2D1B4E);">
+            <div class="pc-lbl"><span>Brume Violette<br>Soir</span></div>
+          </div>
+        </div>
+        <div class="product-badge badge-limited" data-fr="Édition limitée" data-ar="إصدار محدود" data-en="Limited edition">Édition limitée</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Violette Soir" data-ar="ضباب البنفسج المسائي" data-en="Brume Violette Soir">Brume Violette Soir</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Accord boisé-floral. Idéale pour les soirées et occasions spéciales." data-ar="مزيج خشبي زهري. مثالية للسهرات والمناسبات الخاصة." data-en="Woody-floral accord. Ideal for evenings and special occasions.">Accord boisé-floral. Idéale pour les soirées et occasions spéciales.</p>
+        <div class="product-footer">
+          <div class="product-price">2 100 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Amber -->
+    <div class="product-card reveal">
+      <div class="product-img bg-amber">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:40px;height:13px;"></div>
+          <div class="pc-neck" style="width:50px;height:18px;background:#8B5A00;"></div>
+          <div class="pc-body" style="width:80px;height:175px;background:linear-gradient(165deg,#D4A000,#8B5A00,#5C3D00);">
+            <div class="pc-lbl"><span>Brume Or<br>Précieux</span></div>
+          </div>
+        </div>
+        <div class="product-badge badge-new" data-fr="Nouveau" data-ar="جديد" data-en="New">Nouveau</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Or Précieux" data-ar="ضباب الذهب الثمين" data-en="Brume Or Précieux">Brume Or Précieux</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Ambre, vanille et bois de oud. Un luxe accessible, une fragrance inoubliable." data-ar="عنبر وفانيليا وعود. رفاهية بأسعار معقولة وعطر لا يُنسى." data-en="Amber, vanilla and oud wood. Accessible luxury, unforgettable fragrance.">Ambre, vanille et bois de oud. Un luxe accessible, une fragrance inoubliable.</p>
+        <div class="product-footer">
+          <div class="product-price">1 950 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Azure -->
+    <div class="product-card reveal">
+      <div class="product-img bg-azure">
+        <div class="pc-bottle">
+          <div class="pc-cap" style="width:44px;height:14px;"></div>
+          <div class="pc-neck" style="width:56px;height:20px;background:#1A4A8B;"></div>
+          <div class="pc-body" style="width:86px;height:210px;background:linear-gradient(165deg,#2E6AC0,#1A4A8B,#0D2B5C);">
+            <div class="pc-lbl"><span>Brume Azur<br>Pur</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-fr="Brume Azur Pur" data-ar="ضباب الأزور النقي" data-en="Brume Azur Pur">Brume Azur Pur</div>
+        <div class="product-sub" data-fr="Corps &amp; Cheveux — 200ml" data-ar="جسم وشعر — 200 مل" data-en="Body &amp; Hair — 200ml">Corps &amp; Cheveux — 200ml</div>
+        <p class="product-desc" data-fr="Aquatique et frais. Évasion marine pour le quotidien." data-ar="مائي وطازج. هروب بحري للحياة اليومية." data-en="Aquatic and fresh. A daily marine escape.">Aquatique et frais. Évasion marine pour le quotidien.</p>
+        <div class="product-footer">
+          <div class="product-price">1 700 <small>DA</small></div>
+          <button class="add-btn" onclick="addAnim(this)">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ FEATURE — Brume spotlight ════════════════ -->
+<section id="feature">
+  <div class="feature-content reveal">
+    <p class="section-eyebrow" data-fr="PRODUIT PHARE" data-ar="المنتج الرئيسي" data-en="FLAGSHIP PRODUCT">PRODUIT PHARE</p>
+    <h2 class="section-title" data-fr="Brume <em>Parfumée</em>" data-ar="الضباب <em>المعطر</em>" data-en="Brume <em>Parfumée</em>">Brume <em>Parfumée</em></h2>
+    <p class="hero-subtitle" style="color:var(--teal);margin-bottom:1.5rem;font-size:.8rem;" data-fr="Corps et Cheveux" data-ar="للجسم والشعر" data-en="Body and Hair">Corps et Cheveux</p>
+    <p class="feature-desc" data-fr="Notre formule signature allie hydratation légère et sillage délicat. Trois déclinaisons de caractère — Fraîche, Florale, Orientale — un seul geste de soin quotidien." data-ar="صيغتنا الأساسية تجمع بين الترطيب الخفيف والعطر الرقيق. ثلاثة أنواع مختلفة — منعش وزهري وشرقي." data-en="Our signature formula combines light hydration with a delicate sillage. Three character variations — Fresh, Floral, Oriental — one daily care gesture.">Notre formule signature allie hydratation légère et sillage délicat. Trois déclinaisons de caractère — Fraîche, Florale, Orientale — un seul geste de soin quotidien.</p>
+    <ul class="feature-list">
+      <li data-fr="Formule non-grasse à absorption rapide — idéale après la douche" data-ar="تركيبة خالية من الدهون وسريعة الامتصاص" data-en="Non-greasy, fast-absorbing formula — ideal post-shower">Formule non-grasse à absorption rapide — idéale après la douche</li>
+      <li data-fr="Fixation douce du parfum sur cheveux et peau pendant plusieurs heures" data-ar="تثبيت لطيف للعطر على الشعر والجلد لساعات" data-en="Gentle fragrance fixation on hair and skin for hours">Fixation douce du parfum sur cheveux et peau pendant plusieurs heures</li>
+      <li data-fr="Actifs hydratants d'origine végétale, sans alcool agressif" data-ar="مكونات مرطبة نباتية، خالية من الكحول المسبب للضرر" data-en="Plant-based moisturising actives, no harsh alcohol">Actifs hydratants d'origine végétale, sans alcool agressif</li>
+      <li data-fr="Disponible en 200ml — livraison sur toute l'Algérie" data-ar="متوفر بـ 200 مل — توصيل عبر الجزائر كلها" data-en="Available in 200ml — delivered across Algeria">Disponible en 200ml — livraison sur toute l'Algérie</li>
+    </ul>
+    <a href="#contact" class="btn-primary">
+      <span data-fr="Commander maintenant" data-ar="اطلب الآن" data-en="Order now">Commander maintenant</span> →
+    </a>
+  </div>
+
+  <div class="feature-bottles reveal">
+    <!-- Green -->
+    <div class="fb" style="margin-bottom:0;">
+      <div class="fb-cap" style="width:50px;height:16px;background:#1A3009;border-radius:3px 3px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-neck" style="width:62px;height:22px;background:#2D5016;border-radius:4px 4px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-body" style="width:100px;height:260px;background:linear-gradient(165deg,#3A6B1E,#2D5016,#1A3009);">
+        <div class="fb-lbl" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);">
+          <h4>Corps<br>Fraîche</h4>
+          <hr style="border-top-color:var(--yellow);">
+          <p>Makkoz</p>
+        </div>
+      </div>
+    </div>
+    <!-- Black (center, tallest) -->
+    <div class="fb" style="margin-bottom:-20px;">
+      <div class="fb-cap" style="width:60px;height:18px;background:#0D0D0D;border-radius:3px 3px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-neck" style="width:74px;height:26px;background:#1A1A1A;border-radius:4px 4px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-body" style="width:120px;height:315px;background:linear-gradient(165deg,#2E2E2E,#1A1A1A,#0D0D0D);">
+        <div class="fb-lbl" style="background:rgba(232,0,110,.12);border:1px solid rgba(232,0,110,.35);">
+          <h4>Brume<br>Parfumée<br>Signature</h4>
+          <hr style="border-top-color:var(--magenta);">
+          <p>Corps &amp; Cheveux</p>
+        </div>
+      </div>
+    </div>
+    <!-- Red -->
+    <div class="fb" style="margin-bottom:0;">
+      <div class="fb-cap" style="width:50px;height:16px;background:#5C0D0D;border-radius:3px 3px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-neck" style="width:62px;height:22px;background:#8B1A1A;border-radius:4px 4px 0 0;margin:0 auto -1px;"></div>
+      <div class="fb-body" style="width:100px;height:245px;background:linear-gradient(165deg,#C0392B,#8B1A1A,#5C0D0D);">
+        <div class="fb-lbl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);">
+          <h4>Cheveux<br>Orientale</h4>
+          <hr style="border-top-color:var(--yellow);">
+          <p>Makkoz</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-wrap-stripe" style="grid-column:1/-1;"></div>
+</section>
+
+<!-- ══ BRANDS ══════════════════════════════════════ -->
+<section id="brands">
+  <p class="section-eyebrow reveal" data-fr="NOS MARQUES INSTAGRAM" data-ar="علاماتنا على انستغرام" data-en="OUR INSTAGRAM BRANDS">NOS MARQUES INSTAGRAM</p>
+  <h2 class="section-title reveal" data-fr="Deux univers, une <em>vision</em>" data-ar="عالمان، <em>رؤية</em> واحدة" data-en="Two worlds, one <em>vision</em>">Deux univers, une <em>vision</em></h2>
+  <div class="brands-grid">
+    <div class="brand-card bc1 reveal">
+      <div class="brand-accent"></div>
+      <div class="brand-handle"><span>@</span>notecosmetics_<br>algeria</div>
+      <p class="brand-desc" data-fr="Notre marque cosmétique principale. Produits de beauté, soins et hygiène importés et distribués en Algérie. Un catalogue varié pour toutes les femmes algériennes." data-ar="علامتنا التجارية الرئيسية للتجميل. منتجات الجمال والعناية والنظافة المستوردة والموزعة في الجزائر." data-en="Our main cosmetics brand. Beauty, care and hygiene products imported and distributed in Algeria.">Notre marque cosmétique principale. Produits de beauté, soins et hygiène importés et distribués en Algérie. Un catalogue varié pour toutes les femmes algériennes.</p>
+      <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" class="brand-ig-btn">
+        <span data-fr="Voir sur Instagram" data-ar="عرض على انستغرام" data-en="View on Instagram">Voir sur Instagram</span> →
+      </a>
+    </div>
+    <div class="brand-card bc2 reveal">
+      <div class="brand-accent"></div>
+      <div class="brand-handle"><span>@</span>magie.klayn.<br>algerie</div>
+      <p class="brand-desc" data-fr="Notre marque lifestyle axée sur les soins capillaires, les brumes parfumées et les rituels beauté quotidiens. L'élégance accessible, au quotidien." data-ar="علامتنا التجارية للأسلوب الحياتي، تركز على العناية بالشعر والضباب المعطر وطقوس الجمال اليومية." data-en="Our lifestyle brand focused on hair care, perfumed mists and daily beauty rituals. Accessible elegance, every day.">Notre marque lifestyle axée sur les soins capillaires, les brumes parfumées et les rituels beauté quotidiens. L'élégance accessible, au quotidien.</p>
+      <a href="https://www.instagram.com/magie.klayn.algerie" target="_blank" class="brand-ig-btn">
+        <span data-fr="Voir sur Instagram" data-ar="عرض على انستغرام" data-en="View on Instagram">Voir sur Instagram</span> →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══════════════════════════════════════ -->
+<section id="contact">
+  <div class="reveal">
+    <p class="section-eyebrow" data-fr="CONTACTEZ-NOUS" data-ar="اتصل بنا" data-en="CONTACT US">CONTACTEZ-NOUS</p>
+    <h2 class="section-title" data-fr="Parlons de votre <em>projet</em>" data-ar="دعنا نتحدث عن <em>مشروعكم</em>" data-en="Let's talk about your <em>project</em>">Parlons de votre <em>projet</em></h2>
+    <div class="divider"></div>
+    <div class="contact-item">
+      <div class="contact-icon-wrap">📍</div>
+      <div>
+        <span class="contact-label" data-fr="Adresse" data-ar="العنوان" data-en="Address">Adresse</span>
+        <span class="contact-value">Coopérative El Amal, n°46<br>Aïn Naâdja, Djasr Kasentina<br>Alger, Algérie</span>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon-wrap">📞</div>
+      <div>
+        <span class="contact-label" data-fr="Téléphone" data-ar="الهاتف" data-en="Phone">Téléphone</span>
+        <span class="contact-value">
+          <a href="tel:+213541887610">0541 887 610</a><br>
+          <a href="tel:+213541012345">0541 012 345</a>
+        </span>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon-wrap">✉️</div>
+      <div>
+        <span class="contact-label" data-fr="Email" data-ar="البريد الإلكتروني" data-en="Email">Email</span>
+        <span class="contact-value"><a href="mailto:makkoz.contact@gmail.com">makkoz.contact@gmail.com</a></span>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon-wrap">📸</div>
+      <div>
+        <span class="contact-label">Instagram</span>
+        <span class="contact-value">
+          <a href="https://instagram.com/notecosmetics_algeria" target="_blank">@notecosmetics_algeria</a><br>
+          <a href="https://instagram.com/magie.klayn.algerie" target="_blank">@magie.klayn.algerie</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form reveal">
+    <div class="form-group">
+      <label data-fr="Votre nom" data-ar="اسمك" data-en="Your name">Votre nom</label>
+      <input type="text" placeholder="Mohamed Amine Benali">
+    </div>
+    <div class="form-group">
+      <label data-fr="Email ou téléphone" data-ar="البريد أو الهاتف" data-en="Email or phone">Email ou téléphone</label>
+      <input type="text" placeholder="contact@exemple.dz">
+    </div>
+    <div class="form-group">
+      <label data-fr="Sujet" data-ar="الموضوع" data-en="Subject">Sujet</label>
+      <select>
+        <option data-fr="Distribution en gros" data-ar="توزيع بالجملة" data-en="Wholesale distribution">Distribution en gros</option>
+        <option data-fr="Import de produits" data-ar="استيراد المنتجات" data-en="Product import">Import de produits</option>
+        <option data-fr="Partenariat" data-ar="شراكة" data-en="Partnership">Partenariat</option>
+        <option data-fr="Commande individuelle" data-ar="طلب فردي" data-en="Individual order">Commande individuelle</option>
+        <option data-fr="Autre" data-ar="أخرى" data-en="Other">Autre</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-fr="Message" data-ar="الرسالة" data-en="Message">Message</label>
+      <textarea placeholder="..."></textarea>
+    </div>
+    <button class="form-submit" data-fr="Envoyer le message →" data-ar="إرسال الرسالة →" data-en="Send message →">Envoyer le message →</button>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════ -->
+<footer>
+  <!-- Signature bumper wave: magenta + yellow + teal curves from car rear -->
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1440" height="80" fill="#F5F0EA"/>
+      <!-- Teal wave (deepest) -->
+      <path d="M0,55 C300,20 600,70 900,35 C1100,12 1300,60 1440,45 L1440,80 L0,80 Z" fill="#00BFAD" opacity="0.85"/>
+      <!-- Yellow wave (middle) -->
+      <path d="M0,62 C200,30 500,80 800,48 C1000,28 1250,72 1440,55 L1440,80 L0,80 Z" fill="#F5C800"/>
+      <!-- Magenta wave (top) -->
+      <path d="M0,70 C180,42 420,78 700,58 C900,42 1150,75 1440,62 L1440,80 L0,80 Z" fill="#E8006E"/>
+    </svg>
+  </div>
+
+  <div class="footer-body">
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+            <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#F5C800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+            <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+            <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+            <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+            <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+            <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+          </svg>
+          <div class="footer-logo-name">MAKKOZ<small>SARL — Cosmétiques</small></div>
+        </div>
+        <p>Importateur et distributeur algérien de cosmétiques premium. De Alger à toutes les wilayas.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/notecosmetics_algeria" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/213541887610" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="mailto:makkoz.contact@gmail.com" class="social-btn">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5 data-fr="Produits" data-ar="المنتجات" data-en="Products">Produits</h5>
+        <ul>
+          <li><a href="#products" data-fr="Brumes Corps" data-ar="ضباب الجسم" data-en="Body Mists">Brumes Corps</a></li>
+          <li><a href="#products" data-fr="Brumes Cheveux" data-ar="ضباب الشعر" data-en="Hair Mists">Brumes Cheveux</a></li>
+          <li><a href="#products" data-fr="Coffrets Cadeaux" data-ar="علب الهدايا" data-en="Gift Sets">Coffrets Cadeaux</a></li>
+          <li><a href="#products" data-fr="Nouveautés" data-ar="الجديد" data-en="New arrivals">Nouveautés</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5 data-fr="Entreprise" data-ar="الشركة" data-en="Company">Entreprise</h5>
+        <ul>
+          <li><a href="#about" data-fr="À propos" data-ar="من نحن" data-en="About">À propos</a></li>
+          <li><a href="#brands" data-fr="Nos marques" data-ar="علاماتنا" data-en="Our brands">Nos marques</a></li>
+          <li><a href="#contact" data-fr="Revendeurs" data-ar="الموزعون" data-en="Resellers">Revendeurs</a></li>
+          <li><a href="#contact" data-fr="Grossistes" data-ar="تجار الجملة" data-en="Wholesalers">Grossistes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5 data-fr="Contact" data-ar="التواصل" data-en="Contact">Contact</h5>
+        <ul>
+          <li><a href="tel:+213541887610">0541 887 610</a></li>
+          <li><a href="tel:+213541012345">0541 012 345</a></li>
+          <li><a href="mailto:makkoz.contact@gmail.com">makkoz.contact@gmail.com</a></li>
+          <li><a href="https://instagram.com/notecosmetics_algeria" target="_blank">@notecosmetics_algeria</a></li>
+          <li><a href="https://instagram.com/magie.klayn.algerie" target="_blank">@magie.klayn.algerie</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+        <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#F5C800" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span style="font-family:var(--ff-ui);font-size:.7rem;font-weight:700;letter-spacing:.2em;color:rgba(250,247,243,.3);text-transform:uppercase;">SARL MAKKOZ</span>
+    </div>
+    <p data-fr="© 2025 SARL MAKKOZ Import-Export. Alger, Algérie. Tous droits réservés." data-ar="© 2025 SARL MAKKOZ للاستيراد والتصدير. الجزائر." data-en="© 2025 SARL MAKKOZ Import-Export. Algiers, Algeria. All rights reserved.">© 2025 SARL MAKKOZ Import-Export. Alger, Algérie. Tous droits réservés.</p>
+    <p>RC — Aïn Naâdja, Djasr Kasentina</p>
+  </div>
+</footer>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/213541887610" target="_blank" class="wa-btn" title="WhatsApp Makkoz">
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+/* ── LANGUAGE SWITCHER ─────────────────────────── */
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  if (lang === 'ar') {
+    document.body.classList.add('lang-ar');
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+  } else {
+    document.body.classList.remove('lang-ar');
+    document.documentElement.lang = lang;
+    document.documentElement.dir = 'ltr';
+  }
+  document.querySelectorAll(`[data-${lang}]`).forEach(el => {
+    const val = el.getAttribute(`data-${lang}`);
+    if (!val) return;
+    if (val.includes('<em>') || val.includes('<strong>') || val.includes('<br>')) el.innerHTML = val;
+    else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+    else if (el.tagName === 'OPTION' || el.tagName === 'BUTTON') el.textContent = val;
+    else el.textContent = val;
+  });
+}
+
+/* ── SCROLL REVEAL ─────────────────────────────── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── FILTER BUTTONS ────────────────────────────── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* ── ADD BUTTON ANIMATION ──────────────────────── */
+function addAnim(btn) {
+  btn.style.background = '#F5C800';
+  btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#1A1612;fill:none;stroke-width:2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+  setTimeout(() => {
+    btn.style.background = '';
+    btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+  }, 1400);
+}
+
+/* ── NAV ACTIVE STATE ──────────────────────────── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const secObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => {
+        const matches = l.getAttribute('href') === '#' + e.target.id;
+        l.style.color = matches ? 'var(--magenta)' : '';
+        l.style.borderBottomColor = matches ? 'var(--magenta)' : '';
+      });
+    }
+  });
+}, { threshold: 0.45 });
+sections.forEach(s => secObs.observe(s));
+</script>
+</body>
+</html>
+
