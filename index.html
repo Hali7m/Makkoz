@@ -30,6 +30,14 @@
     --ease: cubic-bezier(.4,0,.2,1);
   }
 
+
+  /* CUSTOM SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--magenta); border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+  * { scrollbar-width: thin; scrollbar-color: var(--magenta) var(--ink); }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body { background: var(--cream); color: var(--ink); font-family: var(--ff-body); font-size: 16px; line-height: 1.6; }
@@ -56,13 +64,13 @@
   nav {
     position: fixed; top: 36px; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: .85rem 3rem;
+    padding: 1rem 3.5rem;
     background: rgba(250,247,243,.93); backdrop-filter: blur(12px);
     border-bottom: 2px solid var(--magenta);
   }
   .nav-logo { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; letter-spacing: .18em; color: var(--ink); text-decoration: none; text-transform: uppercase; }
   .nav-logo .dot { color: var(--magenta); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mist); text-decoration: none; transition: color .2s; }
   .nav-links a:hover { color: var(--magenta); }
 
@@ -73,7 +81,7 @@
   }
   .hero-left {
     display: flex; flex-direction: column; justify-content: center;
-    padding: 8rem 4rem 4rem 6rem; position: relative; z-index: 2;
+    padding: 9rem 5rem 5rem 7rem; position: relative; z-index: 2;
   }
   .hero-eyebrow {
     font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
@@ -174,16 +182,16 @@
   .cb-w { flex: 1; background: var(--wrap-white); }
 
   /* SECTION SHARED */
-  section { padding: 6rem 6rem; }
+  section { padding: 7rem 7rem; }
   .section-eyebrow { font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1rem; }
   .section-title { font-family: var(--ff-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 200; line-height: 1.2; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin-bottom: 1.2rem; }
   .section-title em { font-style: normal; font-weight: 700; color: var(--magenta); }
-  .divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--magenta), var(--yellow)); margin: 1.5rem 0; }
+  .divider { width: 56px; height: 3px; background: linear-gradient(90deg, var(--magenta), var(--yellow)); margin: 2rem 0; }
 
   /* ABOUT */
-  #about { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; padding: 6rem; }
+  #about { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; padding: 7rem; }
   .about-text p { font-size: .93rem; color: var(--mist); line-height: 1.9; margin-bottom: 1.2rem; }
-  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
   .stat-num { font-family: var(--ff-display); font-size: 2.8rem; font-weight: 700; color: var(--magenta); line-height: 1; display: block; letter-spacing: .05em; }
   .stat-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--mist); margin-top: .3rem; display: block; }
 
@@ -210,8 +218,8 @@
 
   /* PRODUCTS */
   #products { background: var(--cream); }
-  .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; }
-  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
   .product-card {
     background: var(--white); padding: 0; position: relative;
     transition: transform .3s var(--ease), box-shadow .3s var(--ease);
@@ -225,7 +233,7 @@
     display: flex; align-items: center; justify-content: center;
   }
   .product-card-img-placeholder svg { width: 48px; height: 48px; }
-  .product-card-body { padding: 1.8rem 1.6rem; }
+  .product-card-body { padding: 2rem 2rem; }
   .product-tag {
     position: absolute; top: .9rem; left: .9rem;
     background: var(--magenta); color: var(--white);
@@ -271,7 +279,7 @@
   .brands-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
   .brand-card {
     border: 2px solid transparent;
-    background: var(--white); padding: 3rem 2.5rem;
+    background: var(--white); padding: 3.5rem 3rem;
     display: flex; flex-direction: column; gap: 1rem;
     position: relative; overflow: hidden;
     transition: border-color .25s, transform .25s;
@@ -292,8 +300,8 @@
   .brand-ig-btn:hover { gap: .8rem; }
 
   /* CONTACT */
-  #contact { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; padding: 6rem; }
-  .contact-item { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(232,0,110,.15); }
+  #contact { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 7rem; }
+  .contact-item { display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(232,0,110,.12); }
   .contact-item:last-of-type { border-bottom: none; }
   .contact-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
   .contact-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--magenta); display: block; margin-bottom: .25rem; }
@@ -319,7 +327,7 @@
   .footer-stripe div:nth-child(1) { flex: 4; background: var(--magenta); }
   .footer-stripe div:nth-child(2) { flex: 2; background: var(--yellow); }
   .footer-stripe div:nth-child(3) { flex: 1; background: var(--teal); }
-  .footer-inner { padding: 2.5rem 6rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-inner { padding: 3rem 7rem; display: flex; align-items: center; justify-content: space-between; }
   .footer-logo { font-family: var(--ff-display); font-size: 1rem; font-weight: 700; letter-spacing: .2em; color: var(--yellow); text-transform: uppercase; }
   .footer-copy { font-size: .72rem; }
   .footer-links { display: flex; gap: 1.5rem; }
@@ -349,8 +357,9 @@
     .about-visual { display: none; }
     .products-grid, .gallery-grid { grid-template-columns: 1fr; }
     .brands-grid { grid-template-columns: 1fr; }
-    section, #about, #contact, #gallery, #brands, footer .footer-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-    nav { padding-left: 1.5rem; padding-right: 1.5rem; }
+    section, #about, #contact, #gallery, #brands { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 4rem; padding-bottom: 4rem; }
+    footer .footer-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+    nav { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: .85rem; padding-bottom: .85rem; }
     .nav-links { display: none; }
   }
 </style>
@@ -371,7 +380,23 @@
 
 <!-- NAV -->
 <nav style="top:42px;">
-  <a class="nav-logo" href="#hero">MAKKOZ<span class="dot">✦</span></a>
+  <a class="nav-logo" href="#hero" style="display:flex;align-items:center;gap:.65rem;text-decoration:none;">
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer circle — brand ring -->
+    <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+    <!-- Inner mist droplet shape — stylized M for Makkoz -->
+    <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#1A1612" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Spray dots — "brume" concept -->
+    <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+    <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+    <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+    <!-- Bottom accent stripe — car wrap reference -->
+    <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+    <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+    <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+  </svg>
+  <span style="font-family:var(--ff-display);font-size:1.15rem;font-weight:700;letter-spacing:.18em;color:var(--ink);text-transform:uppercase;line-height:1;">MAKKOZ</span>
+</a>
   <ul class="nav-links">
     <li><a href="#about" data-fr="À Propos" data-ar="من نحن" data-en="About">À Propos</a></li>
     <li><a href="#products" data-fr="Produits" data-ar="المنتجات" data-en="Products">Produits</a></li>
@@ -546,46 +571,48 @@
   </div>
 </section>
 
-<!-- SEO SECTION -->
-<section id="seo" style="background:var(--ink);padding:4rem 6rem;">
-  <p class="section-eyebrow" style="color:var(--yellow);" data-fr="VISIBILITÉ EN LIGNE" data-ar="الظهور على الإنترنت" data-en="ONLINE VISIBILITY">VISIBILITÉ EN LIGNE</p>
-  <h2 class="section-title reveal" style="color:var(--white);" data-fr="Soyez trouvés sur <em>Google</em>" data-ar="كونوا موجودين على <em>Google</em>" data-en="Get found on <em>Google</em>">Soyez trouvés sur <em>Google</em></h2>
-  <p style="color:rgba(250,247,243,.5);font-size:.88rem;max-width:520px;line-height:1.8;margin-bottom:2.5rem;" data-fr="Avec ce site, SARL MAKKOZ apparaîtra dans les résultats Google quand vos clients cherchent vos produits." data-ar="مع هذا الموقع، ستظهر SARL MAKKOZ في نتائج Google عند بحث العملاء عن منتجاتكم." data-en="With this site, SARL MAKKOZ will appear in Google results when customers search for your products.">Avec ce site, SARL MAKKOZ apparaîtra dans les résultats Google quand vos clients cherchent vos produits.</p>
-  <div class="reveal" style="background:#fff;border-radius:8px;padding:1.5rem 1.8rem;max-width:580px;font-family:Arial,sans-serif;box-shadow:0 4px 32px rgba(0,0,0,.4);">
-    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid #e8eaed;">
-      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-      <span style="font-size:.92rem;color:#202124;font-family:Arial;">brume parfumée corps cheveux Alger</span>
-    </div>
-    <div style="font-size:.72rem;color:#202124;margin-bottom:.2rem;">makkoz.dz</div>
-    <div style="font-size:1.05rem;color:#1a0dab;margin-bottom:.35rem;line-height:1.3;">SARL MAKKOZ — Brume Parfumée Corps &amp; Cheveux | Alger</div>
-    <div style="font-size:.85rem;color:#4d5156;line-height:1.6;">Importateur et distributeur de brumes parfumées, soins corps et cheveux. Distribution en gros sur toutes les wilayas d'Algérie. <span style="color:#1a0dab;">Contactez-nous</span> · <span style="color:#1a0dab;">Nos Produits</span></div>
-    <div style="margin-top:.8rem;display:flex;align-items:center;gap:.4rem;">
-      <span style="color:#f5a623;">★★★★★</span>
-      <span style="font-size:.75rem;color:#70757a;">5.0 · Entreprise locale · Alger, Algérie</span>
-    </div>
-  </div>
-</section>
-
 <!-- INSTAGRAM FEED -->
-<section id="gallery" style="background:var(--cream);padding:5rem 6rem;">
+<section id="gallery" style="background:var(--cream);padding:7rem 7rem;">
   <p class="section-eyebrow" data-fr="NOS POSTS INSTAGRAM" data-ar="منشوراتنا على انستغرام" data-en="OUR INSTAGRAM POSTS">NOS POSTS INSTAGRAM</p>
   <h2 class="section-title reveal" data-fr="Nos dernières <em>publications</em>" data-ar="أحدث <em>منشوراتنا</em>" data-en="Our latest <em>posts</em>">Nos dernières <em>publications</em></h2>
-  <p style="font-size:.86rem;color:var(--mist);margin-bottom:2.5rem;max-width:500px;line-height:1.8;" data-fr="Publications officielles directement depuis @magie.klayn.algerie sur Instagram." data-ar="منشورات رسمية مباشرة من @magie.klayn.algerie على انستغرام." data-en="Official posts directly from @magie.klayn.algerie on Instagram.">Publications officielles directement depuis @magie.klayn.algerie sur Instagram.</p>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:900px;">
-    <div class="reveal">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DLiViAqsbUI/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:4px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:260px;padding:0;width:100%;"></blockquote>
+  <p style="font-size:.88rem;color:var(--mist);margin-bottom:3rem;max-width:500px;line-height:1.9;" data-fr="Publications officielles directement depuis @magie.klayn.algerie sur Instagram." data-ar="منشورات رسمية مباشرة من @magie.klayn.algerie على انستغرام." data-en="Official posts directly from @magie.klayn.algerie on Instagram.">Publications officielles directement depuis @magie.klayn.algerie sur Instagram.</p>
+  <style>
+    .ig-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; max-width:1000px; }
+    .ig-frame-wrap {
+      position:relative; width:100%; padding-bottom:125%;
+      overflow:hidden; background:#fff;
+      box-shadow:0 4px 24px rgba(0,0,0,.08);
+      border:1px solid rgba(0,0,0,.06);
+    }
+    .ig-frame-wrap iframe {
+      position:absolute; top:0; left:0;
+      width:100%; height:100%;
+      border:none;
+    }
+    @media(max-width:900px){
+      .ig-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .ig-frame-wrap { padding-bottom: 120%; }
+    }
+  </style>
+  <div class="ig-grid">
+    <div class="ig-frame-wrap reveal">
+      <iframe src="https://www.instagram.com/p/DLiViAqsbUI/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
     </div>
-    <div class="reveal">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DMTbFNBImZ5/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:4px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:260px;padding:0;width:100%;"></blockquote>
+    <div class="ig-frame-wrap reveal">
+      <iframe src="https://www.instagram.com/p/DMTbFNBImZ5/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
     </div>
-    <div class="reveal">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DKQEMWyiycQ/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:4px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:260px;padding:0;width:100%;"></blockquote>
+    <div class="ig-frame-wrap reveal">
+      <iframe src="https://www.instagram.com/reel/DKQEMWyiycQ/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
     </div>
-    <div class="reveal">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQ2LmPWDDfL/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:4px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:260px;padding:0;width:100%;"></blockquote>
+    <div class="ig-frame-wrap reveal">
+      <iframe src="https://www.instagram.com/reel/DQ2LmPWDDfL/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
     </div>
   </div>
-  <script async src="//www.instagram.com/embed.js"></script>
 </section>
 
 <!-- BRANDS -->
@@ -678,7 +705,19 @@
 <footer>
   <div class="footer-stripe"><div></div><div></div><div></div></div>
   <div class="footer-inner">
-    <div class="footer-logo">SARL MAKKOZ</div>
+    <div style="display:flex;align-items:center;gap:.6rem;">
+  <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+    <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#F5C800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+    <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+    <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+    <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+    <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+    <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+  </svg>
+  <span class="footer-logo">SARL MAKKOZ</span>
+</div>
     <div class="footer-copy" data-fr="© 2025 SARL MAKKOZ Import-Export. Alger, Algérie." data-ar="© 2025 SARL MAKKOZ للاستيراد والتصدير. الجزائر." data-en="© 2025 SARL MAKKOZ Import-Export. Algiers, Algeria.">© 2025 SARL MAKKOZ Import-Export. Alger, Algérie.</div>
     <div class="footer-links">
       <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank">Instagram</a>
