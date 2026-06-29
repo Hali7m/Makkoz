@@ -2,420 +2,850 @@
 <html lang="fr" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SARL MAKKOZ – Brume Parfumée</title>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1A1612">
+<title>SARL MAKKOZ – Importateur Cosmétiques Algérie</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,400;0,600;0,700;1,300&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    /* Car wrap palette */
-    --magenta:  #E8006E;
-    --yellow:   #F5C800;
-    --teal:     #00BFAD;
-    --wrap-white: #F5F0EB;
+/* ============================================================
+   TOKENS
+============================================================ */
+:root {
+  --magenta:    #E8006E;
+  --yellow:     #F5C800;
+  --teal:       #00BFAD;
+  --wrap-white: #F5F0EB;
+  --ink:        #1A1612;
+  --cream:      #FAF7F3;
+  --white:      #FFFFFF;
+  --mist:       #6B5E4E;
+  --mist-lt:    #9A8A7A;
 
-    /* Refined UI palette built from wrap */
-    --ink:      #1A1612;
-    --cream:    #FAF7F3;
-    --white:    #FFFFFF;
-    --mist:     #6B5E4E;
+  --ff-display: 'Raleway', sans-serif;
+  --ff-body:    'Montserrat', sans-serif;
+  --ff-arabic:  'Noto Sans Arabic', sans-serif;
+  --ease:       cubic-bezier(.4,0,.2,1);
 
-    /* Accent hierarchy */
-    --accent-1: var(--magenta);   /* primary CTA, tags, eyebrows */
-    --accent-2: var(--yellow);    /* highlights, stats */
-    --accent-3: var(--teal);      /* secondary links, hover */
+  /* header offset — updated by JS on resize */
+  --header-h: 94px;
+}
 
-    --ff-display: 'Raleway', sans-serif;
-    --ff-body:    'Montserrat', sans-serif;
-    --ff-arabic:  'Noto Sans Arabic', sans-serif;
-    --ease: cubic-bezier(.4,0,.2,1);
-  }
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body.lang-ar { font-family: var(--ff-arabic); direction: rtl; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
 
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--magenta); }
+::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+* { scrollbar-width: thin; scrollbar-color: var(--magenta) var(--ink); }
 
-  /* CUSTOM SCROLLBAR */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--ink); }
-  ::-webkit-scrollbar-thumb { background: var(--magenta); border-radius: 0; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
-  * { scrollbar-width: thin; scrollbar-color: var(--magenta) var(--ink); }
+/* ============================================================
+   SCROLL REVEAL
+============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--cream); color: var(--ink); font-family: var(--ff-body); font-size: 16px; line-height: 1.6; }
-  body.lang-ar { font-family: var(--ff-arabic); direction: rtl; }
+/* ============================================================
+   LANG BAR
+============================================================ */
+#lang-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; justify-content: flex-end; align-items: center;
+  background: var(--ink); height: 36px; padding: 0 1.5rem;
+  gap: 0;
+}
+.lang-btn {
+  background: none; border: none;
+  color: rgba(245,200,0,.65);
+  font-family: var(--ff-body); font-size: .68rem; letter-spacing: .12em;
+  text-transform: uppercase; padding: 0 .9rem; cursor: pointer; height: 100%;
+  border-right: 1px solid rgba(245,200,0,.12);
+  transition: color .2s, background .2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.lang-btn:first-child { border-left: 1px solid rgba(245,200,0,.12); }
+.lang-btn:hover { color: var(--white); background: rgba(245,200,0,.08); }
+.lang-btn.active { color: var(--yellow); }
 
-  /* LANG BAR */
-  #lang-bar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    display: flex; justify-content: flex-end; align-items: center;
-    background: var(--ink); height: 36px; padding: 0 2rem;
-  }
-  .lang-btn {
-    background: none; border: none; color: rgba(245,200,0,.7);
-    font-family: var(--ff-body); font-size: .7rem; letter-spacing: .12em;
-    text-transform: uppercase; padding: 0 .9rem; cursor: pointer; height: 100%;
-    border-right: 1px solid rgba(245,200,0,.15);
-    transition: color .2s, background .2s;
-  }
-  .lang-btn:first-child { border-left: 1px solid rgba(245,200,0,.15); }
-  .lang-btn:hover { color: var(--white); background: rgba(245,200,0,.1); }
-  .lang-btn.active { color: var(--yellow); }
+/* ============================================================
+   COLOR BAR
+============================================================ */
+.color-bar {
+  position: fixed; top: 36px; left: 0; right: 0; z-index: 299;
+  height: 5px; display: flex;
+}
+.cb-m { flex: 4; background: var(--magenta); }
+.cb-y { flex: 2; background: var(--yellow); }
+.cb-t { flex: 1; background: var(--teal); }
+.cb-w { flex: 1; background: var(--wrap-white); }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 36px; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 3.5rem;
-    background: rgba(250,247,243,.93); backdrop-filter: blur(12px);
-    border-bottom: 2px solid var(--magenta);
-  }
-  .nav-logo { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; letter-spacing: .18em; color: var(--ink); text-decoration: none; text-transform: uppercase; }
-  .nav-logo .dot { color: var(--magenta); }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mist); text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: var(--magenta); }
+/* ============================================================
+   NAV
+============================================================ */
+nav {
+  position: fixed; top: 41px; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 3rem;
+  background: rgba(250,247,243,.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 2px solid var(--magenta);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: .6rem;
+  text-decoration: none; flex-shrink: 0;
+}
+.nav-logo-text {
+  font-family: var(--ff-display); font-size: 1.1rem; font-weight: 700;
+  letter-spacing: .18em; color: var(--ink); text-transform: uppercase; line-height: 1;
+}
+.nav-links {
+  display: flex; gap: 2rem; list-style: none;
+}
+.nav-links a {
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--mist); text-decoration: none; transition: color .2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--magenta); }
 
-  /* HERO */
-  #hero {
-    min-height: 100vh; padding-top: 36px;
-    display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
-  }
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 9rem 5rem 5rem 7rem; position: relative; z-index: 2;
-  }
-  .hero-eyebrow {
-    font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
-    color: var(--magenta); margin-bottom: 1.4rem;
-    display: flex; align-items: center; gap: .6rem;
-  }
-  .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--magenta); }
-  .hero-title { font-family: var(--ff-display); font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 200; line-height: 1.05; color: var(--ink); margin-bottom: .5rem; letter-spacing: .12em; text-transform: uppercase; }
-  .hero-title em { font-style: normal; color: var(--magenta); font-weight: 700; }
-  .hero-subtitle { font-family: var(--ff-display); font-size: 1rem; font-weight: 300; color: var(--teal); letter-spacing: .3em; text-transform: uppercase; margin-bottom: 2rem; }
-  .hero-desc { font-size: .9rem; color: var(--mist); max-width: 380px; line-height: 1.85; margin-bottom: 2.5rem; }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: .6rem;
-    background: var(--magenta); color: var(--white);
-    padding: .85rem 1.8rem; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-    text-decoration: none; transition: background .22s, gap .22s;
-  }
-  .btn-primary:hover { background: #C2005C; gap: 1rem; }
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: .6rem;
-    border: 2px solid var(--teal); color: var(--teal);
-    padding: .82rem 1.6rem; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-    text-decoration: none; transition: background .22s, color .22s;
-  }
-  .btn-secondary:hover { background: var(--teal); color: var(--white); }
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  gap: 5px; width: 44px; height: 44px;
+  background: none; border: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  margin-right: -.4rem;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform .3s var(--ease), opacity .3s, width .3s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  /* HERO RIGHT — car-wrap inspired panel */
-  .hero-right {
-    position: relative; overflow: hidden;
-    background: var(--ink);
-  }
-  /* Wrap stripe at bottom — magenta/yellow/teal */
-  .wrap-stripe {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 28px; display: flex;
-  }
-  .ws-m { flex: 3; background: var(--magenta); }
-  .ws-y { flex: 1.5; background: var(--yellow); }
-  .ws-t { flex: 1; background: var(--teal); }
+/* MOBILE MENU */
+.mobile-menu {
+  display: none;
+  position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0;
+  background: rgba(250,247,243,.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 190;
+  flex-direction: column;
+  padding: 2.5rem 2rem 3rem;
+  transform: translateX(100%);
+  transition: transform .35s var(--ease);
+  overflow-y: auto;
+}
+.mobile-menu.open {
+  display: flex;
+  transform: translateX(0);
+}
+.mobile-menu ul {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 0;
+  flex: 1;
+}
+.mobile-menu ul li a {
+  display: block;
+  font-family: var(--ff-display); font-size: 1.6rem; font-weight: 200;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
+  text-decoration: none; padding: 1rem 0;
+  border-bottom: 1px solid rgba(232,0,110,.1);
+  transition: color .2s, padding-left .2s;
+}
+body:not(.lang-ar) .mobile-menu ul li a:hover { color: var(--magenta); padding-left: .5rem; }
+.mobile-menu-footer {
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid rgba(232,0,110,.15);
+  display: flex; gap: 1rem; flex-wrap: wrap;
+}
+.mobile-menu-footer a {
+  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--mist); text-decoration: none;
+}
+.mobile-menu-footer a:hover { color: var(--magenta); }
 
-  .hero-product-img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover; opacity: .55;
-    mix-blend-mode: luminosity;
-  }
-  .hero-right-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, rgba(26,22,18,.3) 0%, rgba(26,22,18,.7) 100%);
-  }
-  .hero-right-content {
-    position: relative; z-index: 2;
-    height: 100%; display: flex; flex-direction: column;
-    justify-content: center; align-items: center; padding: 4rem 3rem;
-    text-align: center;
-  }
-  .pulse-ring {
-    position: absolute; border-radius: 50%;
-    border: 1px solid rgba(232,0,110,.3);
-    animation: pulse 3.5s var(--ease) infinite;
-  }
-  .pulse-ring:nth-child(1) { width: 160px; height: 160px; animation-delay: 0s; }
-  .pulse-ring:nth-child(2) { width: 160px; height: 160px; animation-delay: 1.2s; }
-  .pulse-ring:nth-child(3) { width: 160px; height: 160px; animation-delay: 2.4s; }
-  @keyframes pulse { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(5); opacity: 0; } }
-  .hero-brand-big {
-    font-family: var(--ff-display); font-size: 3.5rem; font-weight: 300;
-    color: rgba(245,200,0,.12); letter-spacing: .06em;
-    position: absolute; bottom: 2.5rem; left: 2rem; right: 2rem;
-    text-align: center; line-height: 1; pointer-events: none;
-  }
-  .hero-pill {
-    border: 1px solid rgba(245,200,0,.4);
-    padding: .5rem 1.2rem; margin-bottom: 1.5rem;
-    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--yellow); display: inline-block;
-  }
-  .hero-right-title {
-    font-family: var(--ff-display); font-size: 2.2rem; font-weight: 200;
-    color: var(--white); line-height: 1.15; margin-bottom: .5rem;
-    letter-spacing: .15em; text-transform: uppercase;
-  }
-  .hero-right-title em { font-style: normal; font-weight: 700; color: var(--magenta); }
-  .hero-right-sub {
-    font-size: .75rem; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--teal);
-  }
+/* RTL nav */
+body.lang-ar nav { flex-direction: row-reverse; }
 
-  /* COLOR BAR — wrap palette showcase */
-  .color-bar {
-    height: 6px; display: flex;
-    position: relative; z-index: 10;
-  }
-  .cb-m { flex: 4; background: var(--magenta); }
-  .cb-y { flex: 2; background: var(--yellow); }
-  .cb-t { flex: 1; background: var(--teal); }
-  .cb-w { flex: 1; background: var(--wrap-white); }
+/* ============================================================
+   SECTION SHARED
+============================================================ */
+section { padding: 7rem 6rem; }
+.section-eyebrow {
+  font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: .9rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.section-eyebrow::before {
+  content: ''; display: block; width: 20px; height: 2px; background: var(--magenta);
+}
+.section-title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+  font-weight: 200; line-height: 1.2;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: 1.2rem;
+}
+.section-title em { font-style: normal; font-weight: 700; color: var(--magenta); }
+.divider {
+  width: 52px; height: 3px;
+  background: linear-gradient(90deg, var(--magenta), var(--yellow));
+  margin: 1.8rem 0;
+}
 
-  /* SECTION SHARED */
-  section { padding: 7rem 7rem; }
-  .section-eyebrow { font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1rem; }
-  .section-title { font-family: var(--ff-display); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 200; line-height: 1.2; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin-bottom: 1.2rem; }
-  .section-title em { font-style: normal; font-weight: 700; color: var(--magenta); }
-  .divider { width: 56px; height: 3px; background: linear-gradient(90deg, var(--magenta), var(--yellow)); margin: 2rem 0; }
+/* ============================================================
+   HERO
+============================================================ */
+#hero {
+  min-height: 100svh;
+  padding-top: var(--header-h);
+  display: grid; grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 4rem 4rem 6rem; position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-size: .63rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 22px; height: 2px; background: var(--magenta); }
+h1.hero-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  font-weight: 200; line-height: 1.05;
+  color: var(--ink); margin-bottom: .4rem;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+h1.hero-title em { font-style: normal; color: var(--magenta); font-weight: 700; }
+.hero-subtitle {
+  font-family: var(--ff-display); font-size: clamp(.85rem, 1.5vw, 1rem);
+  font-weight: 300; color: var(--teal);
+  letter-spacing: .3em; text-transform: uppercase; margin-bottom: 2rem;
+}
+.hero-desc {
+  font-size: clamp(.82rem, 1.3vw, .92rem);
+  color: var(--mist); max-width: 400px;
+  line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-  /* ABOUT */
-  #about { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; padding: 7rem; }
-  .about-text p { font-size: .93rem; color: var(--mist); line-height: 1.9; margin-bottom: 1.2rem; }
-  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
-  .stat-num { font-family: var(--ff-display); font-size: 2.8rem; font-weight: 700; color: var(--magenta); line-height: 1; display: block; letter-spacing: .05em; }
-  .stat-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--mist); margin-top: .3rem; display: block; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--magenta); color: var(--white);
+  padding: .9rem 1.8rem;
+  font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; transition: background .22s, gap .22s;
+  white-space: nowrap; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:hover { background: #C2005C; gap: 1rem; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: .6rem;
+  border: 2px solid var(--teal); color: var(--teal);
+  padding: .88rem 1.6rem;
+  font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; transition: background .22s, color .22s;
+  white-space: nowrap; touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-secondary:hover { background: var(--teal); color: var(--white); }
 
-  /* ABOUT VISUAL — car wrap art */
-  .about-visual {
-    aspect-ratio: 3/4; position: relative; overflow: hidden;
-    background: var(--ink);
-  }
-  .av-img { width: 100%; height: 100%; object-fit: cover; opacity: .6; }
-  .av-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(26,22,18,.85) 30%, transparent 100%);
-  }
-  .av-text {
-    position: absolute; bottom: 2rem; left: 2rem; right: 2rem;
-  }
-  .av-name { font-family: var(--ff-display); font-size: 1.8rem; font-weight: 700; color: var(--yellow); letter-spacing: .2em; text-transform: uppercase; }
-  .av-sub { font-size: .6rem; letter-spacing: .25em; text-transform: uppercase; color: var(--teal); margin-top: .4rem; }
-  /* Wrap stripe on the visual */
-  .av-stripe { position: absolute; bottom: 0; left: 0; right: 0; height: 8px; display: flex; }
-  .av-stripe div:nth-child(1) { flex: 4; background: var(--magenta); }
-  .av-stripe div:nth-child(2) { flex: 2; background: var(--yellow); }
-  .av-stripe div:nth-child(3) { flex: 1; background: var(--teal); }
+/* HERO RIGHT */
+.hero-right {
+  position: relative; overflow: hidden;
+  background: var(--ink);
+}
+.hero-product-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; opacity: .5;
+  mix-blend-mode: luminosity;
+}
+.hero-right-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(26,22,18,.25) 0%, rgba(26,22,18,.75) 100%);
+}
+.hero-right-content {
+  position: relative; z-index: 2; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 4rem 2.5rem; text-align: center;
+}
+.pulse-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(232,0,110,.3);
+  animation: pulse 3.5s var(--ease) infinite;
+}
+.pulse-ring:nth-child(1) { width: 150px; height: 150px; animation-delay: 0s; }
+.pulse-ring:nth-child(2) { width: 150px; height: 150px; animation-delay: 1.2s; }
+.pulse-ring:nth-child(3) { width: 150px; height: 150px; animation-delay: 2.4s; }
+@keyframes pulse { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(5); opacity: 0; } }
+.hero-pill {
+  border: 1px solid rgba(245,200,0,.4);
+  padding: .45rem 1.2rem; margin-bottom: 1.4rem;
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--yellow); display: inline-block;
+}
+.hero-right-title {
+  font-family: var(--ff-display); font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 200; color: var(--white); line-height: 1.15;
+  margin-bottom: .5rem; letter-spacing: .15em; text-transform: uppercase;
+}
+.hero-right-title em { font-style: normal; font-weight: 700; color: var(--magenta); }
+.hero-right-sub {
+  font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--teal);
+}
+.hero-brand-big {
+  font-family: var(--ff-display); font-size: 4rem; font-weight: 300;
+  color: rgba(245,200,0,.08); letter-spacing: .06em;
+  position: absolute; bottom: 2.5rem; left: 0; right: 0;
+  text-align: center; pointer-events: none;
+}
+.wrap-stripe {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 24px; display: flex;
+}
+.ws-m { flex: 3; background: var(--magenta); }
+.ws-y { flex: 1.5; background: var(--yellow); }
+.ws-t { flex: 1; background: var(--teal); }
 
-  /* PRODUCTS */
-  #products { background: var(--cream); }
-  .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
-  .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .product-card {
-    background: var(--white); padding: 0; position: relative;
-    transition: transform .3s var(--ease), box-shadow .3s var(--ease);
-    overflow: hidden;
-  }
-  .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(26,22,18,.1); }
-  .product-card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
-  .product-card-img-placeholder {
-    width: 100%; height: 200px;
-    background: linear-gradient(135deg, var(--ink) 0%, #2B2218 100%);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .product-card-img-placeholder svg { width: 48px; height: 48px; }
-  .product-card-body { padding: 2rem 2rem; }
-  .product-tag {
-    position: absolute; top: .9rem; left: .9rem;
-    background: var(--magenta); color: var(--white);
-    font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; padding: .25rem .6rem;
-    z-index: 2;
-  }
-  .product-name { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: .3rem; line-height: 1.3; letter-spacing: .08em; text-transform: uppercase; }
-  .product-sub { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin-bottom: .8rem; }
-  .product-desc { font-size: .85rem; color: var(--mist); line-height: 1.8; }
-  /* Card accent bar */
-  .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--magenta), var(--yellow)); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
-  .product-card:hover::after { transform: scaleX(1); }
+/* ============================================================
+   ABOUT
+============================================================ */
+#about {
+  background: var(--white);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center; padding: 7rem 6rem;
+}
+.about-text p {
+  font-size: .9rem; color: var(--mist);
+  line-height: 1.9; margin-bottom: 1.1rem;
+}
+.about-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2.5rem; margin-top: 3rem;
+}
+.stat-num {
+  font-family: var(--ff-display); font-size: 2.6rem;
+  font-weight: 700; color: var(--magenta);
+  line-height: 1; display: block; letter-spacing: .05em;
+}
+.stat-label {
+  font-size: .62rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--mist);
+  margin-top: .3rem; display: block;
+}
+.about-visual {
+  aspect-ratio: 3/4; position: relative;
+  overflow: hidden; background: var(--ink);
+}
+.av-img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.av-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,22,18,.85) 30%, transparent 100%);
+}
+.av-text { position: absolute; bottom: 2rem; left: 2rem; right: 2rem; }
+.av-name {
+  font-family: var(--ff-display); font-size: 1.8rem;
+  font-weight: 700; color: var(--yellow);
+  letter-spacing: .2em; text-transform: uppercase;
+}
+.av-sub {
+  font-size: .58rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--teal); margin-top: .4rem;
+}
+.av-stripe { position: absolute; bottom: 0; left: 0; right: 0; height: 8px; display: flex; }
+.av-stripe div:nth-child(1) { flex: 4; background: var(--magenta); }
+.av-stripe div:nth-child(2) { flex: 2; background: var(--yellow); }
+.av-stripe div:nth-child(3) { flex: 1; background: var(--teal); }
 
-  /* GALLERY */
-  #gallery { background: var(--ink); padding: 5rem 6rem; }
-  #gallery .section-eyebrow { color: var(--yellow); }
-  #gallery .section-title { color: var(--white); margin-bottom: 2.5rem; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
-  .gallery-item { aspect-ratio: 1; overflow: hidden; position: relative; }
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
-  .gallery-item:hover img { transform: scale(1.06); }
-  .gallery-item-overlay {
-    position: absolute; inset: 0;
-    background: rgba(232,0,110,.0); display: flex; align-items: center; justify-content: center;
-    transition: background .3s;
-  }
-  .gallery-item:hover .gallery-item-overlay { background: rgba(232,0,110,.35); }
-  .gallery-item-label {
-    font-family: var(--ff-display); font-size: 1rem; font-style: italic;
-    color: var(--white); opacity: 0; transition: opacity .3s; text-align: center; padding: 1rem;
-  }
-  .gallery-item:hover .gallery-item-label { opacity: 1; }
-  /* Placeholder for gallery */
-  .gallery-placeholder {
-    aspect-ratio: 1; background: #2B2218;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--ff-display); font-size: .8rem; font-style: italic;
-    color: rgba(245,200,0,.3); text-align: center; padding: 1rem;
-  }
+/* ============================================================
+   PRODUCTS
+============================================================ */
+#products { background: var(--cream); }
+.products-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; margin-bottom: 3.5rem;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.product-card {
+  background: var(--white); position: relative;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+  overflow: hidden;
+}
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(26,22,18,.1); }
+.product-card-img { width: 100%; height: 190px; object-fit: cover; }
+.product-card-img-placeholder {
+  width: 100%; height: 190px;
+  background: linear-gradient(135deg, var(--ink), #2B2218);
+  display: flex; align-items: center; justify-content: center;
+}
+.product-card-body { padding: 1.6rem; }
+.product-tag {
+  position: absolute; top: .85rem; left: .85rem;
+  background: var(--magenta); color: var(--white);
+  font-size: .58rem; letter-spacing: .12em;
+  text-transform: uppercase; padding: .22rem .55rem; z-index: 2;
+}
+body.lang-ar .product-tag { left: auto; right: .85rem; }
+.product-name {
+  font-family: var(--ff-display); font-size: 1rem;
+  font-weight: 600; color: var(--ink);
+  margin-bottom: .25rem; line-height: 1.3;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.product-sub {
+  font-size: .65rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: .7rem;
+}
+.product-desc { font-size: .82rem; color: var(--mist); line-height: 1.75; }
+.product-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--magenta), var(--yellow));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.product-card:hover::after { transform: scaleX(1); }
 
-  /* BRANDS */
-  #brands { background: var(--cream); padding: 5rem 6rem; }
-  .brands-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
-  .brand-card {
-    border: 2px solid transparent;
-    background: var(--white); padding: 3.5rem 3rem;
-    display: flex; flex-direction: column; gap: 1rem;
-    position: relative; overflow: hidden;
-    transition: border-color .25s, transform .25s;
-  }
-  .brand-card:hover { border-color: var(--magenta); transform: translateY(-4px); }
-  .brand-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-  .brand-card:nth-child(1) .brand-card-accent { background: linear-gradient(90deg, var(--magenta), var(--yellow)); }
-  .brand-card:nth-child(2) .brand-card-accent { background: linear-gradient(90deg, var(--teal), var(--yellow)); }
-  .brand-handle { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; color: var(--ink); letter-spacing: .06em; text-transform: lowercase; }
-  .brand-handle span { color: var(--magenta); }
-  .brand-desc { font-size: .88rem; color: var(--mist); line-height: 1.8; }
-  .brand-ig-btn {
-    display: inline-flex; align-items: center; gap: .5rem;
-    color: var(--magenta); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
-    text-decoration: none; margin-top: .5rem; font-weight: 500;
-    transition: gap .2s;
-  }
-  .brand-ig-btn:hover { gap: .8rem; }
+/* ============================================================
+   INSTAGRAM FEED
+============================================================ */
+#gallery { background: var(--ink); padding: 5rem 6rem; }
+#gallery .section-eyebrow { color: var(--yellow); }
+#gallery .section-eyebrow::before { background: var(--yellow); }
+#gallery .section-title { color: var(--white); margin-bottom: 2.5rem; }
 
-  /* CONTACT */
-  #contact { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 7rem; }
-  .contact-item { display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(232,0,110,.12); }
-  .contact-item:last-of-type { border-bottom: none; }
-  .contact-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-  .contact-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--magenta); display: block; margin-bottom: .25rem; }
-  .contact-value { font-size: .9rem; color: var(--ink); line-height: 1.7; }
-  .form-group { margin-bottom: 1.1rem; }
-  .form-group label { display: block; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mist); margin-bottom: .4rem; }
-  .form-group input, .form-group textarea, .form-group select {
-    width: 100%; background: var(--cream); border: 1.5px solid rgba(0,0,0,.1);
-    padding: .75rem 1rem; font-family: var(--ff-body); font-size: .9rem; color: var(--ink);
-    outline: none; transition: border-color .2s; border-radius: 0; appearance: none;
-  }
-  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--magenta); }
-  .form-group textarea { resize: vertical; min-height: 120px; }
-  .form-submit { background: var(--magenta); color: var(--white); border: none; padding: .85rem 2rem; font-family: var(--ff-body); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; width: 100%; transition: background .2s; }
-  .form-submit:hover { background: #C2005C; }
+.ig-mosaic {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem; max-width: 960px; margin-top: 2.5rem;
+}
+.ig-column { display: flex; flex-direction: column; gap: 1.2rem; }
+.ig-account-label {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(250,247,243,.4); margin-bottom: .2rem;
+}
+.ig-account-label span { color: var(--yellow); }
+.ig-tile {
+  position: relative; width: 100%; padding-bottom: 100%;
+  overflow: hidden; background: #2B2218; cursor: pointer;
+}
+.ig-tile iframe {
+  position: absolute; top: -60px; left: -1px;
+  width: calc(100% + 2px); height: calc(100% + 120px);
+  border: none; pointer-events: none;
+}
+.ig-tile-link {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: flex-end;
+  background: linear-gradient(to top, rgba(26,22,18,.7) 0%, transparent 50%);
+  text-decoration: none; opacity: 0; transition: opacity .3s;
+}
+.ig-tile:hover .ig-tile-link { opacity: 1; }
+.ig-tile-link-label {
+  font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--white); padding: .8rem 1rem;
+  display: flex; align-items: center; gap: .4rem;
+}
+.ig-tile-link-label svg { width: 13px; height: 13px; }
+.ig-follow-btns {
+  display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
+}
+.ig-follow-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .65rem 1.3rem;
+  font-family: var(--ff-body);
+  font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; transition: background .2s;
+}
+.ig-follow-btn-yellow {
+  border: 1px solid rgba(245,200,0,.3); color: var(--yellow);
+}
+.ig-follow-btn-yellow:hover { background: rgba(245,200,0,.1); }
+.ig-follow-btn-magenta {
+  border: 1px solid rgba(232,0,110,.3); color: var(--magenta);
+}
+.ig-follow-btn-magenta:hover { background: rgba(232,0,110,.1); }
 
-  /* FOOTER */
-  footer {
-    background: var(--ink); color: rgba(250,247,243,.5);
-    padding: 0; overflow: hidden;
-  }
-  .footer-stripe { height: 5px; display: flex; }
-  .footer-stripe div:nth-child(1) { flex: 4; background: var(--magenta); }
-  .footer-stripe div:nth-child(2) { flex: 2; background: var(--yellow); }
-  .footer-stripe div:nth-child(3) { flex: 1; background: var(--teal); }
-  .footer-inner { padding: 3rem 7rem; display: flex; align-items: center; justify-content: space-between; }
-  .footer-logo { font-family: var(--ff-display); font-size: 1rem; font-weight: 700; letter-spacing: .2em; color: var(--yellow); text-transform: uppercase; }
-  .footer-copy { font-size: .72rem; }
-  .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a { font-size: .72rem; color: rgba(250,247,243,.4); text-decoration: none; transition: color .2s; }
-  .footer-links a:hover { color: var(--magenta); }
+/* ============================================================
+   BRANDS
+============================================================ */
+#brands { background: var(--cream); padding: 5rem 6rem; }
+.brands-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.brand-card {
+  border: 2px solid transparent; background: var(--white);
+  padding: 3rem 2.5rem; display: flex; flex-direction: column; gap: 1rem;
+  position: relative; overflow: hidden;
+  transition: border-color .25s, transform .25s;
+}
+.brand-card:hover { border-color: var(--magenta); transform: translateY(-4px); }
+.brand-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.brand-card:nth-child(1) .brand-card-accent { background: linear-gradient(90deg, var(--magenta), var(--yellow)); }
+.brand-card:nth-child(2) .brand-card-accent { background: linear-gradient(90deg, var(--teal), var(--yellow)); }
+.brand-handle {
+  font-family: var(--ff-display); font-size: 1.2rem;
+  font-weight: 700; color: var(--ink); letter-spacing: .06em; text-transform: lowercase;
+}
+.brand-handle span { color: var(--magenta); }
+.brand-desc { font-size: .86rem; color: var(--mist); line-height: 1.8; }
+.brand-ig-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: var(--magenta); font-size: .72rem; letter-spacing: .1em;
+  text-transform: uppercase; text-decoration: none;
+  margin-top: .5rem; font-weight: 500; transition: gap .2s;
+  width: fit-content;
+}
+.brand-ig-btn:hover { gap: .9rem; }
 
-  /* RTL */
-  body.lang-ar nav { flex-direction: row-reverse; }
-  body.lang-ar .hero-left { padding: 8rem 6rem 4rem 4rem; }
-  body.lang-ar .hero-eyebrow::before { display: none; }
-  body.lang-ar .hero-eyebrow::after { content: ''; display: block; width: 24px; height: 2px; background: var(--magenta); }
-  body.lang-ar .contact-item { flex-direction: row-reverse; }
-  body.lang-ar footer .footer-inner { flex-direction: row-reverse; }
-  body.lang-ar .products-header { flex-direction: row-reverse; }
-  body.lang-ar .divider { margin-right: 0; }
+/* ============================================================
+   CONTACT
+============================================================ */
+#contact {
+  background: var(--white);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; padding: 7rem 6rem;
+}
+.contact-item {
+  display: flex; gap: 1.4rem; align-items: flex-start;
+  margin-bottom: 2rem; padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(232,0,110,.1);
+}
+.contact-item:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.contact-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center; font-size: 1.05rem;
+}
+.contact-label {
+  font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--magenta); display: block; margin-bottom: .22rem;
+}
+.contact-value { font-size: .88rem; color: var(--ink); line-height: 1.7; }
 
-  /* SCROLL REVEAL */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-  .reveal.visible { opacity: 1; transform: none; }
+/* FORM */
+.form-group { margin-bottom: 1rem; }
+.form-group label {
+  display: block; font-size: .65rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--mist); margin-bottom: .4rem;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%; background: var(--cream);
+  border: 1.5px solid rgba(0,0,0,.1);
+  padding: .8rem 1rem; font-family: var(--ff-body);
+  font-size: .88rem; color: var(--ink);
+  outline: none; transition: border-color .2s;
+  border-radius: 0; appearance: none; -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--magenta); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-submit {
+  background: var(--magenta); color: var(--white); border: none;
+  padding: .9rem 2rem; font-family: var(--ff-body);
+  font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  cursor: pointer; width: 100%; transition: background .2s;
+  touch-action: manipulation;
+}
+.form-submit:hover { background: #C2005C; }
+.form-submit:active { background: #9C0048; }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    #hero { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-    .hero-left { padding: 8rem 2rem 4rem; }
-    #about, #contact { grid-template-columns: 1fr; gap: 3rem; }
-    .about-visual { display: none; }
-    .products-grid, .gallery-grid { grid-template-columns: 1fr; }
-    .brands-grid { grid-template-columns: 1fr; }
-    section, #about, #contact, #gallery, #brands { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 4rem; padding-bottom: 4rem; }
-    footer .footer-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-    nav { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: .85rem; padding-bottom: .85rem; }
-    .nav-links { display: none; }
-  }
+/* ============================================================
+   FOOTER
+============================================================ */
+footer { background: var(--ink); color: rgba(250,247,243,.5); overflow: hidden; }
+.footer-stripe { height: 5px; display: flex; }
+.footer-stripe div:nth-child(1) { flex: 4; background: var(--magenta); }
+.footer-stripe div:nth-child(2) { flex: 2; background: var(--yellow); }
+.footer-stripe div:nth-child(3) { flex: 1; background: var(--teal); }
+.footer-inner {
+  padding: 2.5rem 6rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-brand { display: flex; align-items: center; gap: .6rem; }
+.footer-logo {
+  font-family: var(--ff-display); font-size: .95rem;
+  font-weight: 700; letter-spacing: .2em;
+  color: var(--yellow); text-transform: uppercase;
+}
+.footer-copy { font-size: .7rem; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: .7rem; color: rgba(250,247,243,.38);
+  text-decoration: none; transition: color .2s;
+}
+.footer-links a:hover { color: var(--magenta); }
+
+/* ============================================================
+   RTL
+============================================================ */
+body.lang-ar .section-eyebrow::before { display: none; }
+body.lang-ar .section-eyebrow::after { content: ''; display: block; width: 20px; height: 2px; background: var(--magenta); }
+body.lang-ar .hero-eyebrow::before { display: none; }
+body.lang-ar .hero-eyebrow::after { content: ''; display: block; width: 22px; height: 2px; background: var(--magenta); }
+body.lang-ar .hero-left { padding: 4rem 6rem 4rem 4rem; }
+body.lang-ar .contact-item { flex-direction: row-reverse; }
+body.lang-ar .footer-inner { flex-direction: row-reverse; }
+body.lang-ar .products-header { flex-direction: row-reverse; }
+body.lang-ar .product-tag { left: auto; right: .85rem; }
+body.lang-ar .product-card::after { transform-origin: right; }
+
+/* ============================================================
+   WHATSAPP BUTTON
+============================================================ */
+.whatsapp-btn {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.45);
+  transition: transform .2s, box-shadow .2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+}
+.whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.7); }
+.whatsapp-btn:active { transform: scale(.96); }
+
+/* ============================================================
+   RESPONSIVE — 1200px
+============================================================ */
+@media (max-width: 1200px) {
+  .hero-left { padding: 4rem 3rem 4rem 4rem; }
+  #about, #contact { gap: 4rem; }
+  section { padding: 6rem 4rem; }
+  #about, #contact { padding: 6rem 4rem; }
+  footer .footer-inner { padding-left: 4rem; padding-right: 4rem; }
+  nav { padding-left: 2rem; padding-right: 2rem; }
+}
+
+/* ============================================================
+   RESPONSIVE — 900px TABLET
+============================================================ */
+@media (max-width: 900px) {
+  :root { --header-h: 85px; }
+
+  /* Show hamburger */
+  .hamburger { display: flex; }
+  .nav-links { display: none; }
+
+  /* Hero stacks */
+  #hero { grid-template-columns: 1fr; min-height: auto; padding-bottom: 3rem; }
+  .hero-right { display: none; }
+  .hero-left { padding: 3.5rem 2rem 3rem; }
+  .hero-desc { max-width: 100%; }
+
+  /* About */
+  #about { grid-template-columns: 1fr; gap: 2.5rem; padding: 5rem 2rem; }
+  .about-visual { display: none; }
+  .about-stats { grid-template-columns: repeat(2, 1fr); gap: 1.8rem; }
+
+  /* Products */
+  section { padding: 5rem 2rem; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  .products-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2.5rem; }
+
+  /* Instagram */
+  #gallery { padding: 5rem 2rem; }
+  .ig-mosaic { gap: .8rem; }
+  .ig-tile iframe { top: -50px; height: calc(100% + 100px); }
+
+  /* Brands */
+  #brands { padding: 5rem 2rem; }
+
+  /* Contact */
+  #contact { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+
+  /* Footer */
+  .footer-inner { padding: 2rem; flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+  .footer-links { gap: 1.2rem; }
+
+  /* Nav */
+  nav { padding: .8rem 1.25rem; }
+}
+
+/* ============================================================
+   RESPONSIVE — 600px PHONE
+============================================================ */
+@media (max-width: 600px) {
+  :root { --header-h: 82px; }
+
+  #lang-bar { padding: 0 1rem; }
+  .lang-btn { padding: 0 .65rem; font-size: .62rem; }
+
+  .hero-left { padding: 2.5rem 1.2rem 2.5rem; }
+  h1.hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+
+  .products-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .product-card-img { height: 220px; }
+
+  .ig-mosaic { grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .ig-tile { padding-bottom: 120%; }
+  .ig-tile iframe { top: -40px; height: calc(100% + 80px); }
+
+  .brands-grid { grid-template-columns: 1fr; }
+
+  .hero-ctas { flex-direction: column; }
+  .btn-primary, .btn-secondary { justify-content: center; text-align: center; }
+
+  .about-stats { gap: 1.5rem; }
+  .stat-num { font-size: 2.2rem; }
+
+  section { padding: 4rem 1.2rem; }
+  #about { padding: 4rem 1.2rem; }
+  #contact { padding: 4rem 1.2rem; gap: 2.5rem; }
+  #gallery { padding: 4rem 1.2rem; }
+  #brands { padding: 4rem 1.2rem; }
+  .footer-inner { padding: 1.8rem 1.2rem; }
+
+  .ig-follow-btns { flex-direction: column; }
+  .ig-follow-btn { justify-content: center; }
+}
+
+/* ============================================================
+   RESPONSIVE — 380px SMALL PHONE
+============================================================ */
+@media (max-width: 380px) {
+  .lang-btn { padding: 0 .5rem; letter-spacing: .06em; }
+  h1.hero-title { font-size: 2rem; }
+  .section-title { font-size: 1.5rem; }
+  .ig-mosaic { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- LANG BAR -->
+<!-- ============================================================
+     LANG BAR
+============================================================ -->
 <div id="lang-bar">
   <button class="lang-btn active" onclick="setLang('fr')">Français</button>
   <button class="lang-btn" onclick="setLang('ar')">العربية</button>
   <button class="lang-btn" onclick="setLang('en')">English</button>
 </div>
 
-<!-- COLOR BAR — car wrap palette -->
-<div class="color-bar" style="position:fixed;top:36px;left:0;right:0;z-index:99;">
+<!-- COLOR BAR -->
+<div class="color-bar">
   <div class="cb-m"></div><div class="cb-y"></div><div class="cb-t"></div><div class="cb-w"></div>
 </div>
 
-<!-- NAV -->
-<nav style="top:42px;">
-  <a class="nav-logo" href="#hero" style="display:flex;align-items:center;gap:.65rem;text-decoration:none;">
-  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Outer circle — brand ring -->
-    <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
-    <!-- Inner mist droplet shape — stylized M for Makkoz -->
-    <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#1A1612" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Spray dots — "brume" concept -->
-    <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
-    <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
-    <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
-    <!-- Bottom accent stripe — car wrap reference -->
-    <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
-    <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
-    <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
-  </svg>
-  <span style="font-family:var(--ff-display);font-size:1.15rem;font-weight:700;letter-spacing:.18em;color:var(--ink);text-transform:uppercase;line-height:1;">MAKKOZ</span>
-</a>
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#hero" aria-label="SARL MAKKOZ">
+    <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+      <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#1A1612" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+      <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+      <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+      <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+      <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+      <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+    </svg>
+    <span class="nav-logo-text">MAKKOZ</span>
+  </a>
+
   <ul class="nav-links">
     <li><a href="#about" data-fr="À Propos" data-ar="من نحن" data-en="About">À Propos</a></li>
     <li><a href="#products" data-fr="Produits" data-ar="المنتجات" data-en="Products">Produits</a></li>
-    <li><a href="#gallery" data-fr="Galerie" data-ar="معرض" data-en="Gallery">Galerie</a></li>
+    <li><a href="#gallery" data-fr="Instagram" data-ar="انستغرام" data-en="Instagram">Instagram</a></li>
     <li><a href="#brands" data-fr="Marques" data-ar="العلامات" data-en="Brands">Marques</a></li>
     <li><a href="#contact" data-fr="Contact" data-ar="اتصل" data-en="Contact">Contact</a></li>
   </ul>
+
+  <button class="hamburger" id="hamburger-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- HERO -->
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigation">
+  <ul>
+    <li><a href="#about" data-fr="À Propos" data-ar="من نحن" data-en="About" class="mob-link">À Propos</a></li>
+    <li><a href="#products" data-fr="Produits" data-ar="المنتجات" data-en="Products" class="mob-link">Produits</a></li>
+    <li><a href="#gallery" data-fr="Instagram" data-ar="انستغرام" data-en="Instagram" class="mob-link">Instagram</a></li>
+    <li><a href="#brands" data-fr="Marques" data-ar="العلامات" data-en="Brands" class="mob-link">Marques</a></li>
+    <li><a href="#contact" data-fr="Contact" data-ar="اتصل" data-en="Contact" class="mob-link">Contact</a></li>
+  </ul>
+  <div class="mobile-menu-footer">
+    <a href="https://wa.me/213541887610" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" rel="noopener">@notecosmetics_algeria</a>
+    <a href="https://www.instagram.com/magie.klayn.algerie" target="_blank" rel="noopener">@magie.klayn.algerie</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
 <section id="hero">
   <div class="hero-left">
-    <p class="hero-eyebrow reveal" data-fr="SARL MAKKOZ — Importateur Algérien" data-ar="SARL MAKKOZ — مستورد جزائري" data-en="SARL MAKKOZ — Algerian Importer">SARL MAKKOZ — Importateur Algérien</p>
+    <p class="hero-eyebrow reveal"
+      data-fr="SARL MAKKOZ — Importateur Algérien"
+      data-ar="SARL MAKKOZ — مستورد جزائري"
+      data-en="SARL MAKKOZ — Algerian Importer">SARL MAKKOZ — Importateur Algérien</p>
+
     <h1 class="hero-title reveal">
       <em data-fr="Brume" data-ar="ضباب" data-en="Mist">Brume</em><br>
       <span data-fr="Parfumée" data-ar="معطر" data-en="Perfumed">Parfumée</span>
     </h1>
-    <p class="hero-subtitle reveal" data-fr="Corps &amp; Cheveux" data-ar="للجسم والشعر" data-en="Body &amp; Hair">Corps &amp; Cheveux</p>
-    <p class="hero-desc reveal" data-fr="Importateur et distributeur algérien de produits cosmétiques, de beauté et d'hygiène. De Alger à toutes les wilayas — la qualité, accessible à tous." data-ar="مستورد وموزع جزائري لمنتجات التجميل والجمال والنظافة. من الجزائر العاصمة إلى كل الولايات — الجودة في متناول الجميع." data-en="Algerian importer and distributor of cosmetics, beauty and hygiene products. From Algiers to every wilaya — quality accessible to all.">Importateur et distributeur algérien de produits cosmétiques, de beauté et d'hygiène. De Alger à toutes les wilayas — la qualité, accessible à tous.</p>
+
+    <p class="hero-subtitle reveal"
+      data-fr="Corps &amp; Cheveux"
+      data-ar="للجسم والشعر"
+      data-en="Body &amp; Hair">Corps &amp; Cheveux</p>
+
+    <p class="hero-desc reveal"
+      data-fr="Importateur et distributeur algérien de produits cosmétiques, de beauté et d'hygiène. De Alger à toutes les wilayas — la qualité, accessible à tous."
+      data-ar="مستورد وموزع جزائري لمنتجات التجميل والجمال والنظافة. من الجزائر العاصمة إلى كل الولايات — الجودة في متناول الجميع."
+      data-en="Algerian importer and distributor of cosmetics, beauty and hygiene products. From Algiers to every wilaya — quality accessible to all.">Importateur et distributeur algérien de produits cosmétiques, de beauté et d'hygiène. De Alger à toutes les wilayas — la qualité, accessible à tous.</p>
+
     <div class="hero-ctas reveal">
       <a href="#products" class="btn-primary">
         <span data-fr="Voir les produits" data-ar="عرض المنتجات" data-en="View products">Voir les produits</span> →
@@ -425,33 +855,56 @@
       </a>
     </div>
   </div>
+
   <div class="hero-right">
     <img class="hero-product-img"
       src="https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80"
       alt="Cosmetic products"
+      loading="eager"
       onerror="this.style.display='none'">
     <div class="hero-right-overlay"></div>
     <div class="hero-right-content">
       <div class="pulse-ring"></div>
       <div class="pulse-ring"></div>
       <div class="pulse-ring"></div>
-      <div class="hero-pill" data-fr="Beauté · Hygiène · Import" data-ar="الجمال · النظافة · الاستيراد" data-en="Beauty · Hygiene · Import">Beauté · Hygiène · Import</div>
-      <div class="hero-right-title"><em data-fr="Brume" data-ar="ضباب" data-en="Mist">Brume</em><br><span data-fr="Parfumée" data-ar="معطر" data-en="Perfumed">Parfumée</span></div>
-      <div class="hero-right-sub" data-fr="Corps et Cheveux" data-ar="للجسم والشعر" data-en="Body & Hair">Corps et Cheveux</div>
+      <div class="hero-pill"
+        data-fr="Beauté · Hygiène · Import"
+        data-ar="الجمال · النظافة · الاستيراد"
+        data-en="Beauty · Hygiene · Import">Beauté · Hygiène · Import</div>
+      <div class="hero-right-title">
+        <em data-fr="Brume" data-ar="ضباب" data-en="Mist">Brume</em><br>
+        <span data-fr="Parfumée" data-ar="معطر" data-en="Perfumed">Parfumée</span>
+      </div>
+      <div class="hero-right-sub"
+        data-fr="Corps et Cheveux"
+        data-ar="للجسم والشعر"
+        data-en="Body & Hair">Corps et Cheveux</div>
     </div>
     <div class="hero-brand-big">MAKKOZ</div>
     <div class="wrap-stripe"><div class="ws-m"></div><div class="ws-y"></div><div class="ws-t"></div></div>
   </div>
 </section>
 
-<!-- ABOUT -->
+<!-- ============================================================
+     ABOUT
+============================================================ -->
 <section id="about">
   <div class="about-text reveal">
-    <p class="section-eyebrow" data-fr="QUI SOMMES-NOUS" data-ar="من نحن" data-en="WHO WE ARE">QUI SOMMES-NOUS</p>
-    <h2 class="section-title" data-fr="L'excellence cosmétique, <em>algérienne</em>" data-ar="التميز التجميلي، <em>جزائري الصنع</em>" data-en="Cosmetic excellence, <em>Algerian made</em>">L'excellence cosmétique, <em>algérienne</em></h2>
+    <p class="section-eyebrow"
+      data-fr="QUI SOMMES-NOUS"
+      data-ar="من نحن"
+      data-en="WHO WE ARE">QUI SOMMES-NOUS</p>
+    <h2 class="section-title"
+      data-fr="L'excellence cosmétique, <em>algérienne</em>"
+      data-ar="التميز التجميلي، <em>جزائري الصنع</em>"
+      data-en="Cosmetic excellence, <em>Algerian made</em>">L'excellence cosmétique, <em>algérienne</em></h2>
     <div class="divider"></div>
-    <p data-fr="SARL MAKKOZ Import-Export est une entreprise algérienne spécialisée dans l'importation, la commercialisation et le conditionnement de produits cosmétiques, de beauté et d'hygiène." data-ar="SARL MAKKOZ للاستيراد والتصدير شركة جزائرية متخصصة في استيراد وتسويق وتعبئة منتجات التجميل والجمال والنظافة." data-en="SARL MAKKOZ Import-Export is an Algerian company specializing in the import, marketing and packaging of cosmetics, beauty and hygiene products.">SARL MAKKOZ Import-Export est une entreprise algérienne spécialisée dans l'importation, la commercialisation et le conditionnement de produits cosmétiques, de beauté et d'hygiène.</p>
-    <p data-fr="Basée à Aïn Naâdja, Alger, nous opérons dans la distribution en gros et importons des équipements industriels pour le conditionnement, afin d'offrir des produits de qualité à travers toute l'Algérie." data-ar="مقرها في عين النعجة، الجزائر، نعمل في توزيع الجملة ونستورد معدات صناعية للتعبئة، لتقديم منتجات عالية الجودة في جميع أنحاء الجزائر." data-en="Based in Aïn Naâdja, Algiers, we operate in wholesale distribution and import industrial packaging equipment to deliver quality products throughout Algeria.">Basée à Aïn Naâdja, Alger, nous opérons dans la distribution en gros et importons des équipements industriels pour le conditionnement, afin d'offrir des produits de qualité à travers toute l'Algérie.</p>
+    <p data-fr="SARL MAKKOZ Import-Export est une entreprise algérienne spécialisée dans l'importation, la commercialisation et le conditionnement de produits cosmétiques, de beauté et d'hygiène."
+       data-ar="SARL MAKKOZ للاستيراد والتصدير شركة جزائرية متخصصة في استيراد وتسويق وتعبئة منتجات التجميل والجمال والنظافة."
+       data-en="SARL MAKKOZ Import-Export is an Algerian company specializing in the import, marketing and packaging of cosmetics, beauty and hygiene products.">SARL MAKKOZ Import-Export est une entreprise algérienne spécialisée dans l'importation, la commercialisation et le conditionnement de produits cosmétiques, de beauté et d'hygiène.</p>
+    <p data-fr="Basée à Aïn Naâdja, Alger, nous opérons dans la distribution en gros et importons des équipements industriels pour le conditionnement, afin d'offrir des produits de qualité à travers toute l'Algérie."
+       data-ar="مقرها في عين النعجة، الجزائر، نعمل في توزيع الجملة ونستورد معدات صناعية للتعبئة، لتقديم منتجات عالية الجودة في جميع أنحاء الجزائر."
+       data-en="Based in Aïn Naâdja, Algiers, we operate in wholesale distribution and import industrial packaging equipment to deliver quality products throughout Algeria.">Basée à Aïn Naâdja, Alger, nous opérons dans la distribution en gros et importons des équipements industriels pour le conditionnement, afin d'offrir des produits de qualité à travers toute l'Algérie.</p>
     <div class="about-stats">
       <div class="stat-item">
         <span class="stat-num">2+</span>
@@ -471,21 +924,28 @@
       </div>
     </div>
   </div>
+
   <div class="about-visual reveal">
     <img class="av-img"
       src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80"
       alt="Cosmetic products"
+      loading="lazy"
       onerror="this.style.display='none'">
     <div class="av-overlay"></div>
     <div class="av-text">
       <div class="av-name">MAKKOZ</div>
-      <div class="av-sub" data-fr="Beauté & Hygiène — Alger" data-ar="الجمال والنظافة — الجزائر" data-en="Beauty & Hygiene — Algiers">Beauté & Hygiène — Alger</div>
+      <div class="av-sub"
+        data-fr="Beauté & Hygiène — Alger"
+        data-ar="الجمال والنظافة — الجزائر"
+        data-en="Beauty & Hygiene — Algiers">Beauté & Hygiène — Alger</div>
     </div>
     <div class="av-stripe"><div></div><div></div><div></div></div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
+<!-- ============================================================
+     PRODUCTS
+============================================================ -->
 <section id="products">
   <div class="products-header reveal">
     <div>
@@ -497,10 +957,10 @@
 
     <div class="product-card reveal">
       <div class="product-tag" data-fr="Phare" data-ar="مميز" data-en="Featured">Phare</div>
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&q=75"
         alt="Brume Parfumée"
-        onerror="this.outerHTML='<div class=\'product-card-img-placeholder\'><svg viewBox=\'0 0 28 28\' fill=\'none\' stroke=\'#C9A96E\' stroke-width=\'1.5\'><path d=\'M14 3v4M10 7h8v2a6 6 0 01-6 6 6 6 0 01-6-6V7h4\'/><path d=\'M8 19v6h12v-6\' stroke-linecap=\'round\'/></svg></div>'">
+        onerror="this.outerHTML='<div class=\'product-card-img-placeholder\'></div>'">
       <div class="product-card-body">
         <h3 class="product-name" data-fr="Brume Parfumée" data-ar="الضباب المعطر" data-en="Perfumed Mist">Brume Parfumée</h3>
         <p class="product-sub" data-fr="Corps et Cheveux" data-ar="للجسم والشعر" data-en="Body & Hair">Corps et Cheveux</p>
@@ -509,19 +969,19 @@
     </div>
 
     <div class="product-card reveal">
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500&q=75"
         alt="Soins Corporels"
         onerror="this.style.display='none'">
       <div class="product-card-body">
         <h3 class="product-name" data-fr="Soins Corporels" data-ar="العناية بالجسم" data-en="Body Care">Soins Corporels</h3>
         <p class="product-sub" data-fr="Crèmes & Lotions" data-ar="كريمات ولوشنات" data-en="Creams & Lotions">Crèmes & Lotions</p>
-        <p class="product-desc" data-fr="Sélection de crèmes hydratantes, lotions et soins importés de marques reconnues à l'international." data-ar="مجموعة من الكريمات المرطبة واللوشنات المستوردة من علامات تجارية دولية." data-en="Selection of moisturizing creams, lotions and care products imported from internationally recognized brands.">Sélection de crèmes hydratantes, lotions et soins importés de marques reconnues à l'international.</p>
+        <p class="product-desc" data-fr="Sélection de crèmes hydratantes, lotions et soins importés de marques reconnues à l'international." data-ar="مجموعة من الكريمات المرطبة واللوشنات المستوردة من علامات تجارية دولية." data-en="Selection of moisturizing creams, lotions and care products from internationally recognized brands.">Sélection de crèmes hydratantes, lotions et soins importés de marques reconnues à l'international.</p>
       </div>
     </div>
 
     <div class="product-card reveal">
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1527799820374-87591a16f0d8?w=500&q=75"
         alt="Soins Capillaires"
         onerror="this.style.display='none'">
@@ -533,7 +993,7 @@
     </div>
 
     <div class="product-card reveal">
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&q=75"
         alt="Hygiène"
         onerror="this.style.display='none'">
@@ -545,7 +1005,7 @@
     </div>
 
     <div class="product-card reveal">
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&q=75"
         alt="Import Distribution"
         onerror="this.style.display='none'">
@@ -557,7 +1017,7 @@
     </div>
 
     <div class="product-card reveal">
-      <img class="product-card-img"
+      <img class="product-card-img" loading="lazy"
         src="https://images.unsplash.com/photo-1591375462788-25a55055fc0d?w=500&q=75"
         alt="Conditionnement"
         onerror="this.style.display='none'">
@@ -571,81 +1031,136 @@
   </div>
 </section>
 
-<!-- INSTAGRAM FEED -->
-<section id="gallery" style="background:var(--cream);padding:7rem 7rem;">
-  <p class="section-eyebrow" data-fr="NOS POSTS INSTAGRAM" data-ar="منشوراتنا على انستغرام" data-en="OUR INSTAGRAM POSTS">NOS POSTS INSTAGRAM</p>
-  <h2 class="section-title reveal" data-fr="Nos dernières <em>publications</em>" data-ar="أحدث <em>منشوراتنا</em>" data-en="Our latest <em>posts</em>">Nos dernières <em>publications</em></h2>
-  <p style="font-size:.88rem;color:var(--mist);margin-bottom:3rem;max-width:500px;line-height:1.9;" data-fr="Publications officielles directement depuis @magie.klayn.algerie sur Instagram." data-ar="منشورات رسمية مباشرة من @magie.klayn.algerie على انستغرام." data-en="Official posts directly from @magie.klayn.algerie on Instagram.">Publications officielles directement depuis @magie.klayn.algerie sur Instagram.</p>
-  <style>
-    .ig-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; max-width:1000px; }
-    .ig-frame-wrap {
-      position:relative; width:100%; padding-bottom:125%;
-      overflow:hidden; background:#fff;
-      box-shadow:0 4px 24px rgba(0,0,0,.08);
-      border:1px solid rgba(0,0,0,.06);
-    }
-    .ig-frame-wrap iframe {
-      position:absolute; top:0; left:0;
-      width:100%; height:100%;
-      border:none;
-    }
-    @media(max-width:900px){
-      .ig-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-      .ig-frame-wrap { padding-bottom: 120%; }
-    }
-  </style>
-  <div class="ig-grid">
-    <div class="ig-frame-wrap reveal">
-      <iframe src="https://www.instagram.com/p/DSIX1xCiCa9/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+<!-- ============================================================
+     INSTAGRAM FEED
+============================================================ -->
+<section id="gallery">
+  <p class="section-eyebrow"
+    data-fr="NOS POSTS INSTAGRAM"
+    data-ar="منشوراتنا على انستغرام"
+    data-en="OUR INSTAGRAM POSTS">NOS POSTS INSTAGRAM</p>
+  <h2 class="section-title reveal"
+    data-fr="Nos dernières <em>publications</em>"
+    data-ar="أحدث <em>منشوراتنا</em>"
+    data-en="Our latest <em>posts</em>">Nos dernières <em>publications</em></h2>
+
+  <div class="ig-mosaic reveal">
+
+    <!-- Column 1: @magie.klayn.algerie -->
+    <div class="ig-column">
+      <div class="ig-account-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        <span>@magie.klayn.algerie</span>
+      </div>
+      <div class="ig-tile">
+        <iframe src="https://www.instagram.com/p/DSIX1xCiCa9/embed/"
+          frameborder="0" scrolling="no" allowtransparency="true" title="Instagram post"></iframe>
+          <div class="ig-tile-link-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Voir le post
+          </div>
+        </a>
+      </div>
+      <div class="ig-tile">
+        <iframe src="https://www.instagram.com/reel/DQ2LmPWDDfL/embed/"
+          frameborder="0" scrolling="no" allowtransparency="true" title="Instagram post"></iframe>
+          <div class="ig-tile-link-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Voir le post
+          </div>
+        </a>
+      </div>
     </div>
-    <div class="ig-frame-wrap reveal">
-      <iframe src="https://www.instagram.com/reel/DQ2LmPWDDfL/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+
+    <!-- Column 2: @notecosmetics_algeria -->
+    <div class="ig-column">
+      <div class="ig-account-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        <span>@notecosmetics_algeria</span>
+      </div>
+      <div class="ig-tile">
+        <iframe src="https://www.instagram.com/p/DLiViAqsbUI/embed/"
+          frameborder="0" scrolling="no" allowtransparency="true" title="Instagram reel"></iframe>
+          <div class="ig-tile-link-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Voir le reel
+          </div>
+        </a>
+      </div>
+      <div class="ig-tile">
+        <iframe src="https://www.instagram.com/reel/DZuWth5NyQm/embed/"
+          frameborder="0" scrolling="no" allowtransparency="true" title="Instagram reel"></iframe>
+          <div class="ig-tile-link-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Voir le reel
+          </div>
+        </a>
+      </div>
     </div>
-    <div class="ig-frame-wrap reveal">
-      <iframe src="https://www.instagram.com/p/DLiViAqsbUI/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
-    </div>
-    <div class="ig-frame-wrap reveal">
-      <iframe src="https://www.instagram.com/reel/DZuWth5NyQm/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
-    </div>
+  </div>
+
+  <div class="ig-follow-btns reveal">
+    <a href="https://www.instagram.com/magie.klayn.algerie" target="_blank" rel="noopener"
+      class="ig-follow-btn ig-follow-btn-yellow">@magie.klayn.algerie →</a>
+    <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" rel="noopener"
+      class="ig-follow-btn ig-follow-btn-magenta">@notecosmetics_algeria →</a>
   </div>
 </section>
 
-<!-- BRANDS -->
+<!-- ============================================================
+     BRANDS
+============================================================ -->
 <section id="brands">
-  <p class="section-eyebrow" data-fr="NOS MARQUES" data-ar="علاماتنا التجارية" data-en="OUR BRANDS">NOS MARQUES</p>
-  <h2 class="section-title reveal" data-fr="Deux marques, <em>une passion</em>" data-ar="علامتان، <em>شغف واحد</em>" data-en="Two brands, <em>one passion</em>">Deux marques, <em>une passion</em></h2>
+  <p class="section-eyebrow"
+    data-fr="NOS MARQUES"
+    data-ar="علاماتنا التجارية"
+    data-en="OUR BRANDS">NOS MARQUES</p>
+  <h2 class="section-title reveal"
+    data-fr="Deux marques, <em>une passion</em>"
+    data-ar="علامتان، <em>شغف واحد</em>"
+    data-en="Two brands, <em>one passion</em>">Deux marques, <em>une passion</em></h2>
   <div class="divider"></div>
   <div class="brands-grid">
     <div class="brand-card reveal">
       <div class="brand-card-accent"></div>
       <div class="brand-handle"><span>@</span>notecosmetics<br>algeria</div>
-      <p class="brand-desc" data-fr="Notre marque principale dédiée aux cosmétiques et produits de beauté. Retrouvez nos dernières collections, promotions et nouveautés." data-ar="علامتنا التجارية الرئيسية المخصصة لمستحضرات التجميل ومنتجات الجمال. اعثروا على أحدث مجموعاتنا." data-en="Our main brand dedicated to cosmetics and beauty products. Find our latest collections, promotions and new arrivals.">Notre marque principale dédiée aux cosmétiques et produits de beauté. Retrouvez nos dernières collections, promotions et nouveautés.</p>
-      <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" class="brand-ig-btn">
+      <p class="brand-desc"
+        data-fr="Notre marque principale dédiée aux cosmétiques et produits de beauté. Retrouvez nos dernières collections, promotions et nouveautés."
+        data-ar="علامتنا التجارية الرئيسية المخصصة لمستحضرات التجميل ومنتجات الجمال. اعثروا على أحدث مجموعاتنا."
+        data-en="Our main brand dedicated to cosmetics and beauty products. Find our latest collections, promotions and new arrivals.">Notre marque principale dédiée aux cosmétiques et produits de beauté. Retrouvez nos dernières collections, promotions et nouveautés.</p>
+      <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" rel="noopener" class="brand-ig-btn">
         <span data-fr="Voir sur Instagram" data-ar="عرض على انستغرام" data-en="View on Instagram">Voir sur Instagram</span> →
       </a>
     </div>
     <div class="brand-card reveal">
       <div class="brand-card-accent"></div>
       <div class="brand-handle"><span>@</span>magie.klayn.<br>algerie</div>
-      <p class="brand-desc" data-fr="Notre marque lifestyle, axée sur les soins capillaires, les brumes parfumées et les rituels beauté du quotidien." data-ar="علامتنا التجارية للأسلوب الحياتي، تركز على العناية بالشعر والضباب المعطر وطقوس الجمال اليومية." data-en="Our lifestyle brand focused on hair care, perfumed mists and daily beauty rituals.">Notre marque lifestyle, axée sur les soins capillaires, les brumes parfumées et les rituels beauté du quotidien.</p>
-      <a href="https://www.instagram.com/magie.klayn.algerie" target="_blank" class="brand-ig-btn">
+      <p class="brand-desc"
+        data-fr="Notre marque lifestyle, axée sur les soins capillaires, les brumes parfumées et les rituels beauté du quotidien."
+        data-ar="علامتنا التجارية للأسلوب الحياتي، تركز على العناية بالشعر والضباب المعطر وطقوس الجمال اليومية."
+        data-en="Our lifestyle brand focused on hair care, perfumed mists and daily beauty rituals.">Notre marque lifestyle, axée sur les soins capillaires, les brumes parfumées et les rituels beauté du quotidien.</p>
+      <a href="https://www.instagram.com/magie.klayn.algerie" target="_blank" rel="noopener" class="brand-ig-btn">
         <span data-fr="Voir sur Instagram" data-ar="عرض على انستغرام" data-en="View on Instagram">Voir sur Instagram</span> →
       </a>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ============================================================
+     CONTACT
+============================================================ -->
 <section id="contact">
   <div class="contact-info reveal">
-    <p class="section-eyebrow" data-fr="CONTACTEZ-NOUS" data-ar="اتصل بنا" data-en="CONTACT US">CONTACTEZ-NOUS</p>
-    <h2 class="section-title" data-fr="Parlons de votre <em>projet</em>" data-ar="دعنا نتحدث عن <em>مشروعكم</em>" data-en="Let's talk about your <em>project</em>">Parlons de votre <em>projet</em></h2>
+    <p class="section-eyebrow"
+      data-fr="CONTACTEZ-NOUS"
+      data-ar="اتصل بنا"
+      data-en="CONTACT US">CONTACTEZ-NOUS</p>
+    <h2 class="section-title"
+      data-fr="Parlons de votre <em>projet</em>"
+      data-ar="دعنا نتحدث عن <em>مشروعكم</em>"
+      data-en="Let's talk about your <em>project</em>">Parlons de votre <em>projet</em></h2>
     <div class="divider"></div>
+
     <div class="contact-item">
       <div class="contact-icon">📍</div>
       <div>
@@ -657,14 +1172,14 @@
       <div class="contact-icon">📞</div>
       <div>
         <span class="contact-label" data-fr="Téléphone" data-ar="الهاتف" data-en="Phone">Téléphone</span>
-        <span class="contact-value">0541 887 610<br>0541 012 345</span>
+        <span class="contact-value"><a href="tel:+213541887610" style="color:inherit;text-decoration:none;">0541 887 610</a></span>
       </div>
     </div>
     <div class="contact-item">
       <div class="contact-icon">✉️</div>
       <div>
         <span class="contact-label" data-fr="Email" data-ar="البريد الإلكتروني" data-en="Email">Email</span>
-        <span class="contact-value">makkoz.contact@gmail.com</span>
+        <span class="contact-value"><a href="mailto:makkoz.contact@gmail.com" style="color:inherit;text-decoration:none;">makkoz.contact@gmail.com</a></span>
       </div>
     </div>
     <div class="contact-item">
@@ -675,14 +1190,15 @@
       </div>
     </div>
   </div>
+
   <div class="contact-form reveal">
     <div class="form-group">
       <label data-fr="Votre nom" data-ar="اسمك" data-en="Your name">Votre nom</label>
-      <input type="text" placeholder="Mohamed Amine Benali">
+      <input type="text" placeholder="Mohamed Amine Benali" autocomplete="name">
     </div>
     <div class="form-group">
       <label data-fr="Email ou téléphone" data-ar="البريد أو الهاتف" data-en="Email or phone">Email ou téléphone</label>
-      <input type="text" placeholder="contact@exemple.dz">
+      <input type="text" placeholder="contact@exemple.dz" autocomplete="email">
     </div>
     <div class="form-group">
       <label data-fr="Sujet" data-ar="الموضوع" data-en="Subject">Sujet</label>
@@ -697,80 +1213,163 @@
       <label data-fr="Message" data-ar="الرسالة" data-en="Message">Message</label>
       <textarea placeholder="..."></textarea>
     </div>
-    <button class="form-submit" data-fr="Envoyer le message →" data-ar="إرسال الرسالة →" data-en="Send message →">Envoyer le message →</button>
+    <button class="form-submit"
+      data-fr="Envoyer le message →"
+      data-ar="إرسال الرسالة →"
+      data-en="Send message →">Envoyer le message →</button>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ============================================================
+     FOOTER
+============================================================ -->
 <footer>
   <div class="footer-stripe"><div></div><div></div><div></div></div>
   <div class="footer-inner">
-    <div style="display:flex;align-items:center;gap:.6rem;">
-  <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
-    <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#F5C800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
-    <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
-    <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
-    <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
-    <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
-    <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
-  </svg>
-  <span class="footer-logo">SARL MAKKOZ</span>
-</div>
-    <div class="footer-copy" data-fr="© 2025 SARL MAKKOZ Import-Export. Alger, Algérie." data-ar="© 2025 SARL MAKKOZ للاستيراد والتصدير. الجزائر." data-en="© 2025 SARL MAKKOZ Import-Export. Algiers, Algeria.">© 2025 SARL MAKKOZ Import-Export. Alger, Algérie.</div>
+    <div class="footer-brand">
+      <svg width="26" height="26" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="18" cy="18" r="17" stroke="#E8006E" stroke-width="1.5"/>
+        <path d="M10 24 L10 13 L18 20 L26 13 L26 24" stroke="#F5C800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="28" cy="9" r="1.2" fill="#E8006E"/>
+        <circle cx="31" cy="12" r="0.8" fill="#F5C800"/>
+        <circle cx="30" cy="7" r="0.6" fill="#00BFAD"/>
+        <rect x="8" y="27" width="8" height="2" rx="1" fill="#E8006E"/>
+        <rect x="17" y="27" width="4" height="2" rx="1" fill="#F5C800"/>
+        <rect x="22" y="27" width="2.5" height="2" rx="1" fill="#00BFAD"/>
+      </svg>
+      <span class="footer-logo">SARL MAKKOZ</span>
+    </div>
+    <div class="footer-copy"
+      data-fr="© 2025 SARL MAKKOZ Import-Export. Alger, Algérie."
+      data-ar="© 2025 SARL MAKKOZ للاستيراد والتصدير. الجزائر."
+      data-en="© 2025 SARL MAKKOZ Import-Export. Algiers, Algeria.">© 2025 SARL MAKKOZ Import-Export. Alger, Algérie.</div>
     <div class="footer-links">
-      <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank">Instagram</a>
+      <a href="https://www.instagram.com/notecosmetics_algeria" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:makkoz.contact@gmail.com">Email</a>
       <a href="tel:+213541887610" data-fr="Appeler" data-ar="اتصل" data-en="Call">Appeler</a>
     </div>
   </div>
 </footer>
 
-<script>
-  function setLang(lang) {
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-    if (lang === 'ar') {
-      document.body.classList.add('lang-ar');
-      document.documentElement.setAttribute('lang','ar');
-      document.documentElement.setAttribute('dir','rtl');
-    } else {
-      document.body.classList.remove('lang-ar');
-      document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir','ltr');
-    }
-    document.querySelectorAll(`[data-${lang}]`).forEach(el => {
-      const val = el.getAttribute(`data-${lang}`);
-      if (!val) return;
-      if (val.includes('<em>')) el.innerHTML = val;
-      else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
-      else if (el.tagName === 'OPTION') el.textContent = val;
-      else if (el.tagName === 'BUTTON') el.textContent = val;
-      else el.textContent = val;
-    });
-  }
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
-
-<!-- WHATSAPP FLOATING BUTTON -->
-<a href="https://wa.me/213541887610" target="_blank" title="WhatsApp"
-  style="position:fixed;bottom:2rem;right:2rem;z-index:999;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);transition:transform .2s,box-shadow .2s;"
-  onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(37,211,102,.7)'"
-  onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(37,211,102,.5)'">
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+<!-- ============================================================
+     WHATSAPP
+============================================================ -->
+<a href="https://wa.me/213541887610" target="_blank" rel="noopener" title="WhatsApp" class="whatsapp-btn" aria-label="Contacter sur WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="white" aria-hidden="true">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
 </a>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ── Language Switcher ── */
+function setLang(lang) {
+  // Update buttons
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  // Direction & lang attribute
+  if (lang === 'ar') {
+    document.body.classList.add('lang-ar');
+    document.documentElement.setAttribute('lang', 'ar');
+    document.documentElement.setAttribute('dir', 'rtl');
+  } else {
+    document.body.classList.remove('lang-ar');
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', 'ltr');
+  }
+
+  // Update all data-* text content
+  document.querySelectorAll(`[data-${lang}]`).forEach(el => {
+    const val = el.getAttribute(`data-${lang}`);
+    if (!val) return;
+    if (val.includes('<em>')) {
+      el.innerHTML = val;
+    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = val;
+    } else if (el.tagName === 'OPTION') {
+      el.textContent = val;
+    } else if (el.tagName === 'BUTTON') {
+      el.textContent = val;
+    } else {
+      el.textContent = val;
+    }
+  });
+}
+
+/* ── Hamburger Menu ── */
+const hamburger = document.getElementById('hamburger-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+
+function toggleMenu(force) {
+  menuOpen = typeof force !== 'undefined' ? force : !menuOpen;
+  hamburger.classList.toggle('open', menuOpen);
+  hamburger.setAttribute('aria-expanded', menuOpen);
+  if (menuOpen) {
+    mobileMenu.style.display = 'flex';
+    // Force reflow for animation
+    mobileMenu.offsetHeight;
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  } else {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!menuOpen) mobileMenu.style.display = 'none';
+    }, 350);
+  }
+}
+
+hamburger.addEventListener('click', () => toggleMenu());
+
+// Close on nav link click
+document.querySelectorAll('.mob-link').forEach(link => {
+  link.addEventListener('click', () => toggleMenu(false));
+});
+
+// Close on overlay click (outside menu panel)
+document.addEventListener('click', (e) => {
+  if (menuOpen && !mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+    toggleMenu(false);
+  }
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menuOpen) toggleMenu(false);
+});
+
+// Resize: close menu + recalculate header height
+function updateHeaderHeight() {
+  const nav = document.getElementById('main-nav');
+  const h = 41 + nav.offsetHeight; // lang-bar (36) + color-bar (5) + nav
+  document.documentElement.style.setProperty('--header-h', h + 'px');
+  if (window.innerWidth > 900 && menuOpen) toggleMenu(false);
+}
+window.addEventListener('resize', updateHeaderHeight);
+updateHeaderHeight();
+
+/* ── Scroll Reveal ── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── Nav scroll shadow ── */
+const mainNav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  mainNav.style.boxShadow = window.scrollY > 10 ? '0 2px 20px rgba(26,22,18,.08)' : 'none';
+}, { passive: true });
+</script>
 
 </body>
 </html>
